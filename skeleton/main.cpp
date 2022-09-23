@@ -10,6 +10,7 @@
 
 #include <iostream>
 #include "particle.hpp"
+#include "shootSystem.hpp"
 
 
 
@@ -31,13 +32,12 @@ PxScene* gScene = NULL;
 ContactReportCallback gContactReportCallback;
 
 Particle* par = NULL;
-
+shootSystem* shootSys=NULL;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
-
 	gFoundation = PxCreateFoundation(PX_FOUNDATION_VERSION, gAllocator, gErrorCallback);
 
 	gPvd = PxCreatePvd(*gFoundation);
@@ -56,8 +56,8 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-
-	par = new Particle({ 0,0,0 }, { 3,0,-3 });
+	shootSys = new shootSystem();
+	//par = new Particle(ParticleType::FIREBALL);
 }
 
 
@@ -70,7 +70,8 @@ void stepPhysics(bool interactive, double t)
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	par->integrate(t);
+	//par->integrate(t);
+	shootSys->updateParticles(t);
 }
 
 // Function to clean data
@@ -103,6 +104,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 		//case 'B': break;
 		//case ' ':	break;
+	case 'X': shootSys->shootParticle(FIREBALL);
+		break;
 	case ' ':
 	{
 		break;
