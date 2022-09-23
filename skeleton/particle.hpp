@@ -5,36 +5,16 @@
 #include <PxPhysicsAPI.h>
 #include "RenderUtils.hpp"
 
-enum ParticleType {
-	FIREBALL
-};
 class Particle {
 public:
-	Particle(ParticleType Pt);
+	Particle(Vector3 Pos, Vector3 Vel);
 	~Particle();
 
 	void integrate(double t);
 
-	//metodos para setear atributos
-	inline void setMass(float M) { mass = M; }
-	inline void setVelocity(double Vel) {
-		vel = 10 * dir;
-	}
-	inline void setAcceleration(Vector3 Acc) { a = Acc; }
-	inline void setDamping(float D) { damping = D; }
-	inline void setPosition(Vector3 Pos) { pos = Pos; pose = physx::PxTransform(pos); }
-	inline Vector3 getPosition() { return pos; }
-	void establishParticle();
-
 private:
 	Vector3 vel;
-	Vector3 pos;
 	RenderItem* renderItem;
 	physx::PxTransform pose;//A render item le pasamos dir de este pose,para que se actualice
-	Vector3 a;
-	float damping;
-	float mass;
-	ParticleType type;
-	Vector3 dir;
 };
 #endif
