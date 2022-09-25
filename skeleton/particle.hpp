@@ -18,7 +18,7 @@ public:
 	//metodos para setear atributos
 	inline void setMass(float M) { mass = M; }
 	inline void setVelocity(double Vel) {
-		vel = 10 * dir;
+		vel = Vel * dir;
 	}
 	inline void setAcceleration(Vector3 Acc) { a = Acc; }
 	inline void setDamping(float D) { damping = D; }
