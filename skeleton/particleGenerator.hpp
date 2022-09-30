@@ -1,19 +1,20 @@
 #include "particle.hpp"
-#ifndef __SHOOTSYS_H__
-#define __SHOOTSYS_H__
+#ifndef __PARTGEN_H__
+#define __PARTGEN_H__
 
 #include "core.hpp"
 #include <PxPhysicsAPI.h>
 #include "RenderUtils.hpp"
 #include <vector>
+#include <list>
 //enum ParticleType {
 //	FIREBALL
 //};
 
-class shootSystem {
+class particleGenerator {
 public:
-	shootSystem();
-	~shootSystem();
+	particleGenerator();
+	~particleGenerator();
 
 	void shootParticle(ParticleType t);
 	void updateParticles(double t);
@@ -25,6 +26,6 @@ private:
 	/*ParticleType type;*/
 	Particle* particle;
 	double damping;
-	std::vector<Particle*>particleContainer;
+	std::list<Particle*>particleContainer;
 };
 #endif

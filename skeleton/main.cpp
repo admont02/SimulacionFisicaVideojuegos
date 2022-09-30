@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include "particle.hpp"
-#include "shootSystem.hpp"
+#include "particleSystem.hpp"
 
 
 
@@ -32,7 +32,7 @@ PxScene* gScene = NULL;
 ContactReportCallback gContactReportCallback;
 
 Particle* par = NULL;
-shootSystem* shootSys=NULL;
+paticleSystem* shootSys=NULL;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -56,7 +56,7 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	shootSys = new shootSystem();
+	shootSys = new paticleSystem();
 	//par = new Particle(ParticleType::FIREBALL);
 }
 
