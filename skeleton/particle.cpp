@@ -31,7 +31,7 @@ void Particle::establishParticle() {
 	case FIREBALL:
 		setMass(1.0f);
 		setVelocity(10.0f);
-		setAcceleration({ 0.0f,0.0f,0.6f });
+		setAcceleration({ 0.0f,-0.6f,0.0f });
 		setDamping(0.9f);
 		break;
 	default:
