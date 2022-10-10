@@ -1,19 +1,19 @@
 #include "particleSystem.hpp"
 
-paticleSystem::paticleSystem() {
+ParticleSystem::ParticleSystem() {
 
 }
-paticleSystem::~paticleSystem() {
-	for (auto p : particleContainer)
+ParticleSystem::~ParticleSystem() {
+	for (auto p : _particles)
 		delete p;
-	particleContainer.clear();
+	_particles.clear();
 
 }
-void paticleSystem::shootParticle(ParticleType t) {
-	particleContainer.push_back(new Particle(t));
+void ParticleSystem::shootParticle(ParticleType t) {
+	_particles.push_back(new Particle(t));
 }
-void paticleSystem::updateParticles(double t) {
-	for (auto p : particleContainer) {
+void ParticleSystem::updateParticles(double t) {
+	for (auto p : _particles) {
 		p->integrate(t);
 		/*if (p->getPosition().y < 0.0f) {
 

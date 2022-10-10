@@ -4,7 +4,7 @@
 
 Particle::Particle(ParticleType Pt)
 {
-	type = Pt;
+	_type = Pt;
 	dir = GetCamera()->getDir();
 	establishParticle();
 	setPosition({ GetCamera()->getEye()});
@@ -26,7 +26,7 @@ void Particle::integrate(double t)
 	vel *= powf(damping, t);
 }
 void Particle::establishParticle() {
-	switch (type)
+	switch (_type)
 	{
 	case FIREBALL:
 		setMass(1.0f);

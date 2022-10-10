@@ -1,31 +1,31 @@
 #include "particle.hpp"
-#ifndef __PARTGEN_H__
-#define __PARTGEN_H__
+#ifndef __PARTICLE_GENERATOR_H__
+#define __PARTICLE_GENERATOR_H__
 
 #include "core.hpp"
 #include <PxPhysicsAPI.h>
 #include "RenderUtils.hpp"
 #include <vector>
 #include <list>
-//enum ParticleType {
-//	FIREBALL
-//};
+#include <string>
 
-class particleGenerator {
-public:
-	particleGenerator();
-	~particleGenerator();
 
-	void shootParticle(ParticleType t);
-	void updateParticles(double t);
-
+class ParticleGenerator {
 private:
-	Vector3 vel;
-	RenderItem* renderItem;
-	physx::PxTransform pose;//A render item le pasamos dir de este pose,para que se actualice
-	/*ParticleType type;*/
-	Particle* particle;
-	double damping;
-	std::list<Particle*>particleContainer;
+	std::string _name;
+	Vector3 _mean_pos;
+	Vector3 _mean_vel;
+	double _generation_probability;
+	int _num_particles;
+	Particle* _model;
+public:
+	ParticleGenerator();
+	~ParticleGenerator();
+
+	void setParticle(Particle* model);
+	virtual std::list<Particle*>generateParticles()=0;
+
+
+	
 };
 #endif

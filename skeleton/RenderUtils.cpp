@@ -139,7 +139,7 @@ void renderLoop()
 	StartCounter();
 	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(-0.6f,-0.2f,-0.7f));
 
-	setupDefaultWindow("Practica 1-Adrian Montero Castrillo");
+	setupDefaultWindow("Practica 2-Adrian Montero Castrillo");
 	setupDefaultRenderState();
 
 	glutIdleFunc(idleCallback);

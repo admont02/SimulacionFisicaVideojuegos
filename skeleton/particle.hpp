@@ -9,6 +9,18 @@ enum ParticleType {
 	FIREBALL
 };
 class Particle {
+private:
+	Vector3 vel;
+	Vector3 pos;
+	RenderItem* renderItem;
+	physx::PxTransform pose;//A render item le pasamos dir de este pose,para que se actualice
+	Vector3 a;
+	float damping;
+	float mass;
+	ParticleType _type;
+	Vector3 dir;
+
+	double _remaining_time;
 public:
 	Particle(ParticleType Pt);
 	~Particle();
@@ -26,15 +38,6 @@ public:
 	inline Vector3 getPosition() { return pos; }
 	void establishParticle();
 
-private:
-	Vector3 vel;
-	Vector3 pos;
-	RenderItem* renderItem;
-	physx::PxTransform pose;//A render item le pasamos dir de este pose,para que se actualice
-	Vector3 a;
-	float damping;
-	float mass;
-	ParticleType type;
-	Vector3 dir;
+
 };
 #endif
