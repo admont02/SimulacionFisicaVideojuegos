@@ -19,7 +19,7 @@ private:
 	std::normal_distribution<double>_distribucion_normal{0,1};
 
 public:
-	GaussianParticleGenerator();
+	GaussianParticleGenerator(std::string name, int numPart, Vector3 vel, Vector3 pos);
 	~GaussianParticleGenerator();
 
     std::list<Particle*>generateParticles() override;

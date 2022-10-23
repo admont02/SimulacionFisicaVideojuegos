@@ -32,7 +32,7 @@ PxScene* gScene = NULL;
 ContactReportCallback gContactReportCallback;
 
 Particle* par = NULL;
-paticleSystem* shootSys=NULL;
+ParticleSystem* shootSys=NULL;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -56,7 +56,7 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	shootSys = new paticleSystem();
+	shootSys = new ParticleSystem();
 	//par = new Particle(ParticleType::FIREBALL);
 }
 

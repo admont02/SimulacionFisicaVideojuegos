@@ -11,7 +11,7 @@
 
 
 class ParticleGenerator {
-private:
+protected:
 	std::string _name;
 	Vector3 _mean_pos;
 	Vector3 _mean_vel;
@@ -19,13 +19,14 @@ private:
 	int _num_particles;
 	Particle* _model;
 public:
-	ParticleGenerator();
+	ParticleGenerator(std::string name,int numPart,Vector3 vel,Vector3 pos);
 	~ParticleGenerator();
 
-	void setParticle(Particle* model);
-	virtual std::list<Particle*>generateParticles()=0;
+	inline void setParticle(Particle* model) { _model = model; }
+	virtual std::list<Particle*>generateParticles() = 0;
+	inline std::string getName() { return _name; }
+	//void OnParticleDeath(Particle* p);
+	//void shootFirework(int type);
 
-
-	
 };
 #endif

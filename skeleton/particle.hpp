@@ -22,6 +22,7 @@ private:
 
 	double _remaining_time;
 public:
+	Particle() {};
 	Particle(ParticleType Pt);
 	~Particle();
 

@@ -28,6 +28,7 @@ public:
 	void updateParticles(double t);
 	ParticleGenerator* getParticleGenerator(std::string name);
 	void generateFireworkSystem();
+	void update(double t);
 
 
 };
