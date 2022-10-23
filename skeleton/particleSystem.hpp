@@ -9,7 +9,9 @@
 #include <list>
 #include "particleGenerator.hpp"
 
-
+enum GeneratorType {
+	GAUSSIAN
+};
 class ParticleSystem {
 private:
 	Vector3 vel;
@@ -29,6 +31,7 @@ public:
 	ParticleGenerator* getParticleGenerator(std::string name);
 	void generateFireworkSystem();
 	void update(double t);
+	void addGenerator(GeneratorType type);
 
 
 };

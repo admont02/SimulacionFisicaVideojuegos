@@ -8,7 +8,7 @@ Particle::Particle(ParticleType Pt)
 	dir = GetCamera()->getDir();
 	establishParticle();
 	setPosition({ GetCamera()->getEye()});
-    
+	setAlive(true);
 	renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(mass)), &pose, { 1, 0.5, 0, 1 });
 	RegisterRenderItem(renderItem);
 }
@@ -24,6 +24,9 @@ void Particle::integrate(double t)
 	pose.p += vel * t;
 	vel += (a*mass) * t;
 	vel *= powf(damping, t);
+
+	if (_remaining_time > 0) _remaining_time -= t;
+	else _alive = false;
 }
 void Particle::establishParticle() {
 	switch (_type)
@@ -38,4 +41,11 @@ void Particle::establishParticle() {
 		break;
 		
 	}
+}
+Particle* Particle::clone() const
+{
+	auto cloneP = new Particle(_type);
+	cloneP->establishParticle();
+	return cloneP;
+
 }
