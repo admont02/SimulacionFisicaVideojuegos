@@ -71,7 +71,7 @@ void stepPhysics(bool interactive, double t)
 	gScene->simulate(t);
 	gScene->fetchResults(true);
 	//par->integrate(t);
-	shootSys->updateParticles(t);
+	shootSys->update(t);
 }
 
 // Function to clean data
@@ -106,8 +106,9 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		//case ' ':	break;
 	case 'X': shootSys->shootParticle(FIREBALL);
 		break;
-	case ' ':
+	case 'G':
 	{
+		shootSys->addGenerator(GAUSSIAN);
 		break;
 	}
 	default:
