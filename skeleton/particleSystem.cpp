@@ -21,9 +21,9 @@ void ParticleSystem::updateParticles(double t) {
 			++par;
 		}
 		else {
-			auto copy = *par;
-			delete copy;
-			copy = nullptr;
+			//auto copy = *par;
+			delete *par;
+			*par = nullptr;
 			par = _particles.erase(par);
 		}
 		/*if (p->getPosition().y < 0.0f) {
@@ -42,6 +42,13 @@ void ParticleSystem::addGenerator(GeneratorType type) {
 	default:
 		break;
 	}
+}
+void ParticleSystem::shootFirework(int type)
+{
+}
+void ParticleSystem::generateFireworkSystem()
+{
+	//std::shared_ptr<ParticleGenerator>g(new GaussianParticleGenerator("FireworkGaussian",50,{0,5,0},{0,0,0},{5,5,5},{}))
 }
 void ParticleSystem::update(double t) {
 	for (auto pg : _particle_generators) {
