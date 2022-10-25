@@ -27,6 +27,7 @@ public:
 	inline std::string getName() { return _name; }
 	//void OnParticleDeath(Particle* p);
 	//void shootFirework(int type);
+	inline void setPosition(Vector3 p)
 
 };
 #endif

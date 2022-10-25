@@ -6,16 +6,13 @@
 #include "particleGenerator.hpp"
 
 class Firework : public Particle {
-	
-	int age; //edad del firework, si es 0 no se generan más
+protected:
 	std::list<std::shared_ptr<ParticleGenerator>> _gens;
 public:
-	Firework(Vector3 pos, Vector3 dir, std::list<std::shared_ptr<ParticleGenerator>> lG, float radius, int a);
-	~Firework() = default;
+	Firework(std::list<std::shared_ptr<ParticleGenerator>> partGen,Vector3 pos, Vector3 dir,int life, float r);
+	~Firework(){};
 	//virtual void integrate(double t) override;
 	virtual Particle* clone() const;
-
-	inline void addGenerator(std::shared_ptr<ParticleGenerator> pG) { _gens.push_back(pG); };
 
 	std::list<Particle* >explode();
 };
