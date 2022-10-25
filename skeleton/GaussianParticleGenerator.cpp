@@ -5,7 +5,7 @@
 GaussianParticleGenerator::GaussianParticleGenerator(std::string name, int numPart, Vector3 vel, Vector3 pos,
 	Vector3 dev_vel, Vector3 dev_pos, double time) : ParticleGenerator(name, numPart, vel, pos)
 {
-	_model = new Particle();
+	_model = new Particle(FIREBALL);
 	_num_particles = numPart;
 	_mean_vel = vel;
 	_mean_pos = pos;

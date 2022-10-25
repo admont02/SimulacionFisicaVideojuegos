@@ -37,7 +37,7 @@ void ParticleSystem::addGenerator(GeneratorType type) {
 	switch (type)
 	{
 	case GAUSSIAN:
-		_particle_generators.push_back(new GaussianParticleGenerator("GAUSSIAN", 100, { 0,10,0 }, { 30,30,30 }, { 2,1,2 }, { 2,2,2 }, 5.0));
+		_particle_generators.push_back(new GaussianParticleGenerator("GAUSSIAN", 100, { 0,10,0 }, { 0,0,0 }, { 2,1,2 }, { 2,2,2 }, 5.0));
 		break;
 	default:
 		break;
