@@ -18,5 +18,5 @@ std::list<Particle*> Firework::explode()
 	for (auto f : _gens) {
 		
 	}
-	return ;
+	return fireworks;
 }

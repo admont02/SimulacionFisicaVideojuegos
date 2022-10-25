@@ -9,6 +9,7 @@
 #include <list>
 #include "particleGenerator.hpp"
 #include "firework.hpp"
+#include "fireworkRule.hpp"
 
 enum GeneratorType {
 	GAUSSIAN
@@ -25,6 +26,7 @@ private:
 	std::list<ParticleGenerator*>_particle_generators;
 	std::vector<Firework*>_fireworks_pool;
 	ParticleGenerator* _firework_gen;
+	std::vector<FireworkRule> _firework_rules;
 public:
 	ParticleSystem();
 	~ParticleSystem();
@@ -35,8 +37,11 @@ public:
 	void generateFireworkSystem();
 	void update(double t);
 	void addGenerator(GeneratorType type);
+	//firework
 	void shootFirework(int type);
-	void generateFireworkSystem();
+
+	void createFireworkRules();
+	void generateFireworks(unsigned type, const Vector3& pos);
 
 };
 #endif

@@ -8,6 +8,7 @@
 enum ParticleType {
 	FIREBALL
 };
+
 class Particle {
 protected:
 	Vector3 vel;
