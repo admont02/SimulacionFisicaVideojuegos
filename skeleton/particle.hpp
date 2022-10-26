@@ -43,7 +43,8 @@ public:
 	inline void setPosition(Vector3 Pos) { pos = Pos; pose = physx::PxTransform(pos); }
 	inline void setVelocity(Vector3 Vel) { vel = Vel; }
 	inline Vector3 getPosition() { return pos; }
-	void establishParticle();
+	inline Vector3 getVelocity() { return vel; }
+	void establishParticle(Vector3 P, Vector3 V);
 	virtual Particle* clone() const;
 	inline void setLifeTime(double time) { _remaining_time = time; }
 

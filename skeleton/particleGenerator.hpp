@@ -18,18 +18,22 @@ protected:
 	double _generation_probability;
 	int _num_particles;
 	Particle* _model;
+	bool _active = true;
 public:
-	ParticleGenerator(std::string name,int numPart,Vector3 vel,Vector3 pos);
-	~ParticleGenerator(){};
+	ParticleGenerator(std::string name, int numPart, Vector3 vel, Vector3 pos);
+	~ParticleGenerator() {};
 
-	inline void setParticle(Particle* model) { _model = model; }
+	inline void setParticle(Particle* model) {
+		//if (model != nullptr) delete _model;
+		_model = model;
+	}
 	virtual std::list<Particle*>generateParticles() = 0;
 	inline std::string getName() { return _name; }
 	//void OnParticleDeath(Particle* p);
 	//void shootFirework(int type);
-	inline void setPosition(Vector3 p) { _mean_pos = p; }
-	inline void setVelocity(Vector3 v) { _mean_vel = v; }
-
+	inline void setNumPart(int n) { _num_particles = n; }
+	inline void turnOff() { _active = false; }
+	inline void turnOn() { _active = true; }
 
 };
 #endif

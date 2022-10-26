@@ -2,10 +2,15 @@
 #include "GaussianParticleGenerator.hpp"
 
 
-GaussianParticleGenerator::GaussianParticleGenerator(std::string name,Particle* p, int numPart, Vector3 vel, Vector3 pos,
+GaussianParticleGenerator::GaussianParticleGenerator(std::string name,ParticleType pT, int numPart, Vector3 vel, Vector3 pos,
 	Vector3 dev_vel, Vector3 dev_pos, double time) : ParticleGenerator(name, numPart, vel, pos)
 {
-	_model = p;
+	turnOn();
+	_model = new Particle();
+
+	if (pT == FIREBALL)
+		_model->establishParticle(pos,vel);
+
 	_num_particles = numPart;
 	_mean_vel = vel;
 	_mean_pos = pos;
@@ -27,14 +32,18 @@ GaussianParticleGenerator::GaussianParticleGenerator(std::string name,Particle* 
 std::list<Particle*> GaussianParticleGenerator::generateParticles()
 {
 	std::list<Particle*> l = std::list<Particle*>();
-	for (int i = 0; i < _num_particles; i++)
-	{
-		/*if(_normal_distr(gen))*/
-		auto* p = _model->clone();
-		p->setPosition({ (float)_x_pos_Distr(gen),(float)_y_pos_Distr(gen),(float)_z_pos_Distr(gen) });
-		p->setNewVelocity({ (float)_x_vel_Distr(gen),(float)_y_vel_Distr(gen),(float)_z_vel_Distr(gen) });
-		p->setLifeTime(_time_Distr(gen));
-		l.push_back(p);
+	if (_active) {
+		for (int i = 0; i < _num_particles; i++)
+		{
+			/*if(_normal_distr(gen))*/
+			auto* p = _model->clone();
+			p->setPosition(_model->getPosition()+ Vector3((float)_x_pos_Distr(gen), (float)_y_pos_Distr(gen), (float)_z_pos_Distr(gen)));
+			p->setNewVelocity(_model->getVelocity() + Vector3((float)_x_vel_Distr(gen),(float)_y_vel_Distr(gen),(float)_z_vel_Distr(gen)));
+			p->setLifeTime(_time_Distr(gen));
+			l.push_back(p);
+		}
 	}
+
+
 	return l;
 }
