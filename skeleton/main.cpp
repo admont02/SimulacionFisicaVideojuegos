@@ -111,6 +111,11 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		shootSys->addGenerator(GAUSSIAN);
 		break;
 	}
+	case 'F':
+	{
+		shootSys->shootFirework(0);
+		break;
+	}
 	default:
 		break;
 	}

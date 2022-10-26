@@ -2,7 +2,7 @@
 #include "particle.hpp"
 
 
-Particle::Particle(ParticleType Pt)
+Particle::Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, float d)
 {
 	_type = Pt;
 	dir = GetCamera()->getDir();
@@ -44,7 +44,7 @@ void Particle::establishParticle() {
 }
 Particle* Particle::clone() const
 {
-	auto cloneP = new Particle(_type);
+	auto cloneP = new Particle(_type,pos,vel,a,mass,damping);
 	cloneP->establishParticle();
 	return cloneP;
 

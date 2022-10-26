@@ -9,11 +9,11 @@ class Firework : public Particle {
 protected:
 	std::list<std::shared_ptr<ParticleGenerator>> _gens;
 public:
-	Firework(std::list<std::shared_ptr<ParticleGenerator>> partGen,Vector3 pos, Vector3 dir,int life, float r);
+	Firework(Vector3 pos, Vector3 vel,Vector3 a, float mass,float damping);
 	~Firework(){};
 	//virtual void integrate(double t) override;
-	virtual Particle* clone() const;
-
+    Firework* clone() const;
+	inline void addGenerator(std::shared_ptr<ParticleGenerator> g) { _gens.push_back(g); }
 	std::list<Particle* >explode();
 };
 #endif

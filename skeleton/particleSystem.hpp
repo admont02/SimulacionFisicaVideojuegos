@@ -15,7 +15,7 @@ enum GeneratorType {
 	GAUSSIAN
 };
 class ParticleSystem {
-private:
+protected:
 	Vector3 vel;
 	RenderItem* renderItem;
 	physx::PxTransform pose;//A render item le pasamos dir de este pose,para que se actualice
@@ -23,7 +23,7 @@ private:
 	Particle* particle;
 	double damping;
 	std::list<Particle*>_particles;
-	std::list<ParticleGenerator*>_particle_generators;
+	std::list<std::shared_ptr<ParticleGenerator>>_particle_generators;
 	std::vector<Firework*>_fireworks_pool;
 	ParticleGenerator* _firework_gen;
 	std::vector<FireworkRule> _firework_rules;
@@ -39,9 +39,9 @@ public:
 	void addGenerator(GeneratorType type);
 	//firework
 	void shootFirework(int type);
-
+	void onParticleDeath(Particle* p);
 	void createFireworkRules();
-	void generateFireworks(unsigned type, const Vector3& pos);
+	void generateFirework(unsigned type, const Vector3& pos);
 
 };
 #endif

@@ -6,7 +6,7 @@
 #include "RenderUtils.hpp"
 
 enum ParticleType {
-	FIREBALL
+	FIREBALL,FIREWORK
 };
 
 class Particle {
@@ -25,7 +25,7 @@ protected:
 	bool _alive;
 public:
 	Particle() {};
-	Particle(ParticleType Pt);
+	Particle(ParticleType Pt,Vector3 p,Vector3 v,Vector3 acc,float m,float d);
 	~Particle();
 
 	void integrate(double t);
@@ -41,6 +41,7 @@ public:
 	inline void setAcceleration(Vector3 Acc) { a = Acc; }
 	inline void setDamping(float D) { damping = D; }
 	inline void setPosition(Vector3 Pos) { pos = Pos; pose = physx::PxTransform(pos); }
+	inline void setVelocity(Vector3 Vel) { vel = Vel; }
 	inline Vector3 getPosition() { return pos; }
 	void establishParticle();
 	virtual Particle* clone() const;

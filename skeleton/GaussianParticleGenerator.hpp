@@ -37,7 +37,7 @@ protected:
 public:
 	GaussianParticleGenerator(std::string name, int numPart, Vector3 vel, 
 		Vector3 pos,Vector3 dev_vel,Vector3 dev_pos,double time);
-	~GaussianParticleGenerator();
+	~GaussianParticleGenerator(){};
 
     std::list<Particle*>generateParticles() override;
 

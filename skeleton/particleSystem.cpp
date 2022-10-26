@@ -2,7 +2,7 @@
 #include "GaussianParticleGenerator.hpp"
 
 ParticleSystem::ParticleSystem() {
-
+	generateFireworkSystem();
 }
 ParticleSystem::~ParticleSystem() {
 	for (auto p : _particles)
@@ -11,7 +11,7 @@ ParticleSystem::~ParticleSystem() {
 
 }
 void ParticleSystem::shootParticle(ParticleType t) {
-	_particles.push_back(new Particle(t));
+	_particles.push_back(new Particle(t,pose.p,vel,{0,10,0},10.0,0.99));
 }
 void ParticleSystem::updateParticles(double t) {
 	auto par = _particles.begin();
@@ -37,7 +37,7 @@ void ParticleSystem::addGenerator(GeneratorType type) {
 	switch (type)
 	{
 	case GAUSSIAN:
-		_particle_generators.push_back(new GaussianParticleGenerator("GAUSSIAN", 100, { 0,10,0 }, { 0,0,0 }, { 2,1,2 }, { 2,2,2 }, 5.0));
+		_particle_generators.push_back(std::shared_ptr<ParticleGenerator>(new GaussianParticleGenerator("GAUSSIAN", 100, { 0,10,0 }, { 0,0,0 }, { 2,1,2 }, { 2,2,2 }, 5.0)));
 		break;
 	default:
 		break;
@@ -45,10 +45,39 @@ void ParticleSystem::addGenerator(GeneratorType type) {
 }
 void ParticleSystem::shootFirework(int type)
 {
+	Firework* x;
+	x = _fireworks_pool.at(0)->clone();
+	x->setPosition({ 0,0,0 });
+
+	_particles.push_back(x);
+}
+void ParticleSystem::onParticleDeath(Particle* p)
+{
+	auto* f = dynamic_cast<Firework*>(p);
+	if (f) {
+		for(auto firework: f->explode())
+			_particles.push_back(f);
+
+	}
 }
 void ParticleSystem::generateFireworkSystem()
 {
 	//std::shared_ptr<ParticleGenerator>g(new GaussianParticleGenerator("FireworkGaussian",50,{0,5,0},{0,0,0},{5,5,5},{}))
+	auto x = new Firework(Vector3(1000000000, 0, 0),Vector3(0,30,0),Vector3(0,-10,0),10.0,0.99);
+//	x->addGenerator(_particle_generators.front()); //x->addGenerator(rocket);
+	x->setLifeTime(5.0);
+	_fireworks_pool.push_back(x);
+
+	/*x = new Firework(Vector3(10000000, 1000000000, 0), Vector3(0, 30, 0), Vector3(0, 2, 0), 0.9999, 1.0, Firework::LINEAR);
+	x->addGenerator(particleGen_list.front());
+	x->setTimeAlive(8.0);
+	fireworks_pool.push_back(x);
+
+	auto rocket = particleGen_list.begin(); rocket++;
+	x = new Firework(Vector3(10000000, 1000000000, 0), Vector3(0, 30, 0), Vector3(0, 2, 0), 0.9999, 1.0, Firework::CIRCULAR);
+	x->addGenerator(*rocket);
+	x->setTimeAlive(8.0);
+	fireworks_pool.push_back(x);*/
 }
 void ParticleSystem::update(double t) {
 	for (auto pg : _particle_generators) {
@@ -69,7 +98,7 @@ void ParticleSystem::createFireworkRules() {
 	_firework_rules[6].set(6, 0.5, 1.5, { -3, -0.5, 0 }, { 30.0, 2.5, 0.01 }, 0.999, { {0, 50} });
 	_firework_rules[7].set(7, 4, 6, { -5, -0.5, 0 }, { 5, 0, 0 }, 0.999, { {6, 25} });
 }
-void ParticleSystem::generateFireworks(unsigned type, const Vector3& pos) {
+void ParticleSystem::generateFirework(unsigned type, const Vector3& pos) {
 	//if (type >= _firework_rules.size()) return;
 	//Particle* new_p = new Firework(pos, { 5.0f,30.0f,.0f }, { 0,-10,0 }*0.99f, _firework_rules[type],
 	//	0.99f, 3.0f, _curr_t, type);
