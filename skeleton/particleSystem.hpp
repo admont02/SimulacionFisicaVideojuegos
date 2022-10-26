@@ -33,10 +33,12 @@ public:
 
 	void shootParticle(ParticleType t);
 	void updateParticles(double t);
-	ParticleGenerator* getParticleGenerator(std::string name);
 	void generateFireworkSystem();
 	void update(double t);
 	void addGenerator(GeneratorType type);
+	inline void addGenerator(std::shared_ptr<ParticleGenerator> g) { _particle_generators.push_back(g); }
+	
+	ParticleGenerator* getParticleGenerator(std::string name);
 	//firework
 	void shootFirework(int type);
 	void onParticleDeath(Particle* p);

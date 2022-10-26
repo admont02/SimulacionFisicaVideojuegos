@@ -5,9 +5,14 @@
 Particle::Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, float d)
 {
 	_type = Pt;
+	setPosition(p);
+	setVelocity(v);
+	setAcceleration(acc);
+	setMass(m);
+	setDamping(d);
 	dir = GetCamera()->getDir();
-	establishParticle();
-	setPosition({ GetCamera()->getEye()});
+//	establishParticle();
+	//setPosition({ GetCamera()->getEye()});
 	setAlive(true);
 	renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(mass)), &pose, { 1, 0.5, 0, 1 });
 	RegisterRenderItem(renderItem);

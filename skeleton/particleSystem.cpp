@@ -2,7 +2,6 @@
 #include "GaussianParticleGenerator.hpp"
 
 ParticleSystem::ParticleSystem() {
-	generateFireworkSystem();
 }
 ParticleSystem::~ParticleSystem() {
 	for (auto p : _particles)
@@ -21,6 +20,7 @@ void ParticleSystem::updateParticles(double t) {
 			++par;
 		}
 		else {
+			//onParticleDeath(*par);
 			//auto copy = *par;
 			delete *par;
 			*par = nullptr;
@@ -43,18 +43,30 @@ void ParticleSystem::addGenerator(GeneratorType type) {
 		break;
 	}
 }
+ParticleGenerator* ParticleSystem::getParticleGenerator(std::string name)
+{
+	for (auto p : _particle_generators)
+		if (p->getName() == name)
+			return p.get();
+	return nullptr;
+}
 void ParticleSystem::shootFirework(int type)
 {
-	Firework* x;
-	x = _fireworks_pool.at(0)->clone();
-	x->setPosition({ 0,0,0 });
+	//generateFireworkSystem();
 
-	_particles.push_back(x);
+	
+	auto f = _fireworks_pool[type]->clone();
+//	auto g = getParticleGenerator("FIREWORK_GAUSSIAN");
+	//g->setParticle(f);
+
+	//x->setPosition({ 0,0,0 });
+
+	_particles.push_back(f);
 }
 void ParticleSystem::onParticleDeath(Particle* p)
 {
 	auto* f = dynamic_cast<Firework*>(p);
-	if (f) {
+	if (f!=nullptr) {
 		for(auto firework: f->explode())
 			_particles.push_back(f);
 
@@ -62,8 +74,11 @@ void ParticleSystem::onParticleDeath(Particle* p)
 }
 void ParticleSystem::generateFireworkSystem()
 {
-	//std::shared_ptr<ParticleGenerator>g(new GaussianParticleGenerator("FireworkGaussian",50,{0,5,0},{0,0,0},{5,5,5},{}))
-	auto x = new Firework(Vector3(1000000000, 0, 0),Vector3(0,30,0),Vector3(0,-10,0),10.0,0.99);
+	//std::shared_ptr<ParticleGenerator>g(new GaussianParticleGenerator("FireworkGaussian", 50, { 0,5,0 }, { 0,0,0 }, { 5,5,5 }, {}));
+	std::shared_ptr<ParticleGenerator>g(new GaussianParticleGenerator("FIREWORK_GAUSSIAN", 100, { 0,10,0 }, { 0,0,0 }, { 2,1,2 }, { 2,2,2 }, 5.0));
+//	_particle_generators.push_back(g);
+	auto x = new Firework({ g }, Vector3(1000000000, 0, 0), Vector3(0, 30, 0), Vector3(0, -10, 0), 10.0, 0.99);
+	x->addGenerator(g);
 //	x->addGenerator(_particle_generators.front()); //x->addGenerator(rocket);
 	x->setLifeTime(5.0);
 	_fireworks_pool.push_back(x);

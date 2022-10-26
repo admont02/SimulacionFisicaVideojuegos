@@ -57,6 +57,7 @@ void initPhysics(bool interactive)
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
 	shootSys = new ParticleSystem();
+	shootSys->generateFireworkSystem();
 	//par = new Particle(ParticleType::FIREBALL);
 }
 
