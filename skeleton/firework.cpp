@@ -1,13 +1,13 @@
 #include "firework.hpp"
 
-Firework::Firework(std::list<std::shared_ptr<ParticleGenerator>> g, Vector3 p, Vector3 v, Vector3 a, float mass, float damping) : Particle(FIREWORK, p, v, a, mass, damping)
+Firework::Firework(Vector3 p, Vector3 v, Vector3 a, float mass, float damping) : Particle(FIREWORK, p, v, a, mass, damping)
 {
-	_gens = g;
+
 }
 
 Firework* Firework::clone() const
 {
-	auto newF = new Firework(_gens, pos, vel, a, mass, damping);
+	auto newF = new Firework(pos, vel, a, mass, damping);
 	newF->setLifeTime(_remaining_time);
 	for (auto g : _gens) newF->addGenerator(g);
 	return newF;

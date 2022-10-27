@@ -97,7 +97,7 @@ void ParticleSystem::generateFireworkSystem()
 	//std::shared_ptr<ParticleGenerator>g(new GaussianParticleGenerator("FireworkGaussian", 50, { 0,5,0 }, { 0,0,0 }, { 5,5,5 }, {}));
 	std::shared_ptr<ParticleGenerator>g(new GaussianParticleGenerator("FIREWORK_GAUSSIAN", FIREWORK, 100, { 0,10,0 }, { 0,0,0 }, { 2,1,2 }, { 2,2,2 }, 5.0));
 	//	_particle_generators.push_back(g);
-	auto x = new Firework({ g }, Vector3(1000000000, 0, 0), Vector3(0, 20, 0), Vector3(0, -10, 0), 1.0, 0.99);
+	auto x = new Firework(Vector3(1000000000, 0, 0), Vector3(0, 20, 0), Vector3(0, -10, 0), 1.0, 0.99);
 	g->setNumPart(0);
 	x->addGenerator(g);
 	//	x->addGenerator(_particle_generators.front()); //x->addGenerator(rocket);
