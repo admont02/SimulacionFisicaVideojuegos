@@ -160,3 +160,8 @@ void ParticleSystem::generateFirework(unsigned type, const Vector3& pos) {
 
 	//_particles.push_back(new_p);
 }
+
+bool ParticleSystem::isFirework()
+{
+	return false;
+}

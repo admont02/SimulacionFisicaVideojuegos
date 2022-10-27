@@ -51,6 +51,7 @@ public:
 	void onParticleDeath(Particle* p);
 	void createFireworkRules();
 	void generateFirework(unsigned type, const Vector3& pos);
+	bool isFirework();
 
 };
 #endif

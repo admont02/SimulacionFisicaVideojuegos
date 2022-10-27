@@ -49,6 +49,7 @@ public:
 	virtual Particle* clone() const;
 	inline void setLifeTime(double time) { _remaining_time = time; }
 	inline void setColor(Vector4 c) { color = c; }
+	void redimension(physx::PxTransform* newPos, double newMas, Vector4 newCol);
 
 };
 #endif

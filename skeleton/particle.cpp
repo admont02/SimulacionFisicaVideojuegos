@@ -59,7 +59,7 @@ void Particle::establishParticle(Vector3 P,Vector3 V) {
 		setAcceleration({ 0.0f,-0.6f,0.0f });
 		setDamping(0.9f);
 		renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(1.0)), &pose, { 0,0.5,0.5,0.3 });
-		RegisterRenderItem(renderItem);
+		//RegisterRenderItem(renderItem);
 		break;
 	default:
 		break;
@@ -71,4 +71,10 @@ Particle* Particle::clone() const
 	auto cloneP = new Particle(_type,pos,vel,a,mass,damping,_remaining_time,color);
 	return cloneP;
 
+}
+
+void Particle::redimension(physx::PxTransform* newPos, double newMass, Vector4 newCol)
+{
+	DeregisterRenderItem(renderItem);
+	renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(newMass)), newPos, newCol);
 }
