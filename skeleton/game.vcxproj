@@ -269,7 +269,6 @@
     <ClInclude Include="callbacks.hpp" />
     <ClInclude Include="core.hpp" />
     <ClInclude Include="firework.hpp" />
-    <ClInclude Include="fireworkRule.hpp" />
     <ClInclude Include="GaussianParticleGenerator.hpp" />
     <ClInclude Include="particle.hpp" />
     <ClInclude Include="particleGenerator.hpp" />

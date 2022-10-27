@@ -9,7 +9,6 @@
 #include <list>
 #include "particleGenerator.hpp"
 #include "firework.hpp"
-#include "fireworkRule.hpp"
 #include "UniformParticleGenerator.hpp"
 #include "GaussianParticleGenerator.hpp"
 
@@ -29,7 +28,6 @@ protected:
 	std::list<std::shared_ptr<ParticleGenerator>>_particle_generators;
 	std::vector<Firework*>_fireworks_pool;
 	ParticleGenerator* _firework_gen;
-	std::vector<FireworkRule> _firework_rules;
 	UniformParticleGenerator* chorro;
 	GaussianParticleGenerator* chorroGauss;
 public:
@@ -49,9 +47,7 @@ public:
 	//firework
 	void shootFirework(int type);
 	void onParticleDeath(Particle* p);
-	void createFireworkRules();
-	void generateFirework(unsigned type, const Vector3& pos);
-	bool isFirework();
+	
 
 };
 #endif
