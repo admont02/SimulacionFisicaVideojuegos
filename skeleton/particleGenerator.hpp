@@ -33,7 +33,7 @@ public:
 	//void shootFirework(int type);
 	inline void setNumPart(int n) { _num_particles = n; }
 	inline void turnOff() { _active = false; }
-	inline void turnOn() { _active =true; }
+	inline void turnOn() { _active =!_active; }
 	inline bool isOn() { return _active; }
 
 };
