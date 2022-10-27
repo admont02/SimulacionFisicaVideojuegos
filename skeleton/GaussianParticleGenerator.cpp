@@ -3,7 +3,7 @@
 
 
 GaussianParticleGenerator::GaussianParticleGenerator(std::string name,ParticleType pT, int numPart, Vector3 vel, Vector3 pos,
-	Vector3 dev_vel, Vector3 dev_pos, double time) : ParticleGenerator(name, numPart, vel, pos)
+	Vector3 dev_vel, Vector3 dev_pos, double time) /*: ParticleGenerator(name, numPart, vel, pos)*/
 {
 	turnOn();
 	_model = new Particle();

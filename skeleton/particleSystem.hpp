@@ -10,9 +10,10 @@
 #include "particleGenerator.hpp"
 #include "firework.hpp"
 #include "fireworkRule.hpp"
+#include "UniformParticleGenerator.hpp"
 
 enum GeneratorType {
-	GAUSSIAN
+	GAUSSIAN,UNIFORM
 };
 class ParticleSystem {
 protected:
@@ -23,10 +24,12 @@ protected:
 	Particle* particle;
 	double damping;
 	std::list<Particle*>_particles;
+	std::list<ParticleGenerator*>_generators;
 	std::list<std::shared_ptr<ParticleGenerator>>_particle_generators;
 	std::vector<Firework*>_fireworks_pool;
 	ParticleGenerator* _firework_gen;
 	std::vector<FireworkRule> _firework_rules;
+	UniformParticleGenerator* chorro;
 public:
 	ParticleSystem();
 	~ParticleSystem();
@@ -39,6 +42,8 @@ public:
 	inline void addGenerator(std::shared_ptr<ParticleGenerator> g) { _particle_generators.push_back(g); }
 	
 	ParticleGenerator* getParticleGenerator(std::string name);
+
+	void activeParticleGenerator(GeneratorType gt);
 	//firework
 	void shootFirework(int type);
 	void onParticleDeath(Particle* p);

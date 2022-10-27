@@ -18,6 +18,19 @@ Particle::Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, 
 	renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(mass)), &pose, { 1, 0.5, 0, 1 });
 	RegisterRenderItem(renderItem);
 }
+Particle::Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, float d, double t, Vector4 col) {
+	_type = Pt;
+	setPosition(p);
+	vel = v;
+	a = acc;
+	mass = m;
+	damping = d;
+	_remaining_time = t;
+	color = col;
+	_alive = true;
+	renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(mass)), &pose, color);
+	RegisterRenderItem(renderItem);
+}
 
 Particle::~Particle()
 {
@@ -31,6 +44,7 @@ void Particle::integrate(double t)
 	pos = pose.p;
 	vel += (a*mass) * t;
 	vel *= powf(damping, t);
+	
 
 	if (_remaining_time > 0) _remaining_time -= t;
 	else _alive = false;
@@ -54,8 +68,7 @@ void Particle::establishParticle(Vector3 P,Vector3 V) {
 }
 Particle* Particle::clone() const
 {
-	auto cloneP = new Particle(_type,pos,vel,a,mass,damping);
-	cloneP->establishParticle(pos,vel);
+	auto cloneP = new Particle(_type,pos,vel,a,mass,damping,_remaining_time,color);
 	return cloneP;
 
 }

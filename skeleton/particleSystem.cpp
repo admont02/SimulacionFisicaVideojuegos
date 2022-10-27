@@ -2,6 +2,9 @@
 #include "GaussianParticleGenerator.hpp"
 
 ParticleSystem::ParticleSystem() {
+	chorro = new UniformParticleGenerator({ 0,0,0 }, { 0,0,0 });
+	chorro->setParticle(new Particle(FIREBALL, { 0,0,0 }, { 0,10,-40 }, { 0,-10,0 }, 1.0, 0.99,2.0, { 1,0.5,0,1 }));
+	_generators.push_back(chorro);
 }
 ParticleSystem::~ParticleSystem() {
 	for (auto p : _particles)
@@ -54,6 +57,17 @@ ParticleGenerator* ParticleSystem::getParticleGenerator(std::string name)
 			return p.get();
 	return nullptr;
 }
+void ParticleSystem:: activeParticleGenerator(GeneratorType gt) {
+	switch (gt)
+	{
+	case GAUSSIAN:
+		break;
+	case UNIFORM: chorro->turnOn();
+		break;
+	default:
+		break;
+	}
+}
 void ParticleSystem::shootFirework(int type)
 {
 	//generateFireworkSystem();
@@ -102,10 +116,27 @@ void ParticleSystem::generateFireworkSystem()
 	fireworks_pool.push_back(x);*/
 }
 void ParticleSystem::update(double t) {
-	for (auto pg : _particle_generators) {
-		auto parts = pg->generateParticles();
-		for (auto p_ : parts)_particles.push_back(p_);
+	for (auto pg : _generators) {
+		if (pg->isOn()) {
+			auto parts = pg->generateParticles();
+			for (auto p_ : parts)_particles.push_back(p_);
+		}
+		
 	}
+	for (auto pg : _particle_generators) {
+		
+			auto parts = pg->generateParticles();
+			for (auto p_ : parts)_particles.push_back(p_);
+
+	}
+
+	/*if (chorro != nullptr && chorro->isOn()) {
+
+		std::list<Particle*> newParticles = chorro->generateParticles();
+		for (auto a : newParticles)
+			_particles.push_back(a);
+		newParticles.clear();
+	}*/
 	updateParticles(t);
 }
 void ParticleSystem::createFireworkRules() {

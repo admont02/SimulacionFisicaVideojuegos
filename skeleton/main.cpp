@@ -109,7 +109,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	case 'G':
 	{
-		shootSys->addGenerator(GAUSSIAN);
+		shootSys->activeParticleGenerator(UNIFORM);
+		//shootSys->addGenerator(GAUSSIAN);
 		break;
 	}
 	case 'F':

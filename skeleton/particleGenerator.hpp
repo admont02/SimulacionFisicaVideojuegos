@@ -18,9 +18,9 @@ protected:
 	double _generation_probability;
 	int _num_particles;
 	Particle* _model;
-	bool _active = true;
+	bool _active;
 public:
-	ParticleGenerator(std::string name, int numPart, Vector3 vel, Vector3 pos);
+	/*ParticleGenerator(std::string name, int numPart, Vector3 vel, Vector3 pos);*/
 	~ParticleGenerator() {};
 
 	inline void setParticle(Particle* model) {
@@ -33,7 +33,8 @@ public:
 	//void shootFirework(int type);
 	inline void setNumPart(int n) { _num_particles = n; }
 	inline void turnOff() { _active = false; }
-	inline void turnOn() { _active = true; }
+	inline void turnOn() { _active =true; }
+	inline bool isOn() { return _active; }
 
 };
 #endif

@@ -20,12 +20,13 @@ protected:
 	float mass;
 	ParticleType _type;
 	Vector3 dir;
-
+	Vector4 color;
 	double _remaining_time;
 	bool _alive;
 public:
 	Particle() {};
 	Particle(ParticleType Pt,Vector3 p,Vector3 v,Vector3 acc,float m,float d);
+	Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, float d,double t, Vector4 col);
 	~Particle();
 
 	void integrate(double t);
