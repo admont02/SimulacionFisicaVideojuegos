@@ -11,6 +11,7 @@
 #include "firework.hpp"
 #include "fireworkRule.hpp"
 #include "UniformParticleGenerator.hpp"
+#include "GaussianParticleGenerator.hpp"
 
 enum GeneratorType {
 	GAUSSIAN,UNIFORM
@@ -30,6 +31,7 @@ protected:
 	ParticleGenerator* _firework_gen;
 	std::vector<FireworkRule> _firework_rules;
 	UniformParticleGenerator* chorro;
+	GaussianParticleGenerator* chorroGauss;
 public:
 	ParticleSystem();
 	~ParticleSystem();

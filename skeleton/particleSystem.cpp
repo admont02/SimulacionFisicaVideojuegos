@@ -3,9 +3,13 @@
 
 ParticleSystem::ParticleSystem() {
 	chorro = new UniformParticleGenerator({ 0,0,0 }, { 0,0,0 });
-	chorro->setParticle(new Particle(FIREBALL, { 0,0,0 }, { 0,10,-40 }, { 0,-10,0 }, 1.0, 0.99, 2.0, { 1,0.5,0,1 }));
+	chorro->setParticle(new Particle(FIREBALL, { 0,0,0 }, { 0,10,-40 }, { 0,-10,0 }, 2.0, 0.99, 2.0, { 0.2,0.5,0,1 }));
 	std::shared_ptr<ParticleGenerator> it = std::shared_ptr<ParticleGenerator>(chorro);
 	_particle_generators.push_back(it);
+	chorroGauss= new GaussianParticleGenerator("GAUSSIAN", FIREBALL, 100, { 0,10,0 }, { 0,0,0 }, { 2,1,2 }, { 2,2,2 }, 5.0);
+	chorroGauss->setParticle(new Particle(FIREBALL, { 0,0,0 }, { 0,10,-40 }, { 0,-10,0 }, 2.0, 0.99, 2.0, { 1,0.7,1,1 }));
+	std::shared_ptr<ParticleGenerator> it2 = std::shared_ptr<ParticleGenerator>(chorroGauss);
+	_particle_generators.push_back(it2);
 	//_generators.push_back(chorro);
 }
 ParticleSystem::~ParticleSystem() {
@@ -62,7 +66,7 @@ ParticleGenerator* ParticleSystem::getParticleGenerator(std::string name)
 void ParticleSystem::activeParticleGenerator(GeneratorType gt) {
 	switch (gt)
 	{
-	case GAUSSIAN:
+	case GAUSSIAN: chorroGauss->turnOn();
 		break;
 	case UNIFORM: chorro->turnOn();
 		break;
@@ -97,7 +101,7 @@ void ParticleSystem::generateFireworkSystem()
 	//std::shared_ptr<ParticleGenerator>g(new GaussianParticleGenerator("FireworkGaussian", 50, { 0,5,0 }, { 0,0,0 }, { 5,5,5 }, {}));
 	std::shared_ptr<ParticleGenerator>g(new GaussianParticleGenerator("FIREWORK_GAUSSIAN", FIREWORK, 100, { 0,10,0 }, { 0,0,0 }, { 2,1,2 }, { 2,2,2 }, 5.0));
 	//	_particle_generators.push_back(g);
-	auto x = new Firework(Vector3(1000000000, 0, 0), Vector3(0, 20, 0), Vector3(0, -10, 0), 1.0, 0.99);
+	auto x = new Firework(Vector3(1000000000, 0, 0), Vector3(0, 25, 0), Vector3(0, -10, 0), 1.0, 0.99);
 	g->setNumPart(0);
 	x->addGenerator(g);
 	//	x->addGenerator(_particle_generators.front()); //x->addGenerator(rocket);

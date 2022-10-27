@@ -6,7 +6,7 @@
 #include "RenderUtils.hpp"
 
 enum ParticleType {
-	FIREBALL,FIREWORK
+	FIREBALL, FIREWORK
 };
 
 class Particle {
@@ -25,8 +25,8 @@ protected:
 	bool _alive;
 public:
 	Particle() {};
-	Particle(ParticleType Pt,Vector3 p,Vector3 v,Vector3 acc,float m,float d);
-	Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, float d,double t, Vector4 col);
+	Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, float d);
+	Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, float d, double t, Vector4 col);
 	~Particle();
 
 	void integrate(double t);
@@ -48,6 +48,7 @@ public:
 	void establishParticle(Vector3 P, Vector3 V);
 	virtual Particle* clone() const;
 	inline void setLifeTime(double time) { _remaining_time = time; }
+	inline void setColor(Vector4 c) { color = c; }
 
 };
 #endif

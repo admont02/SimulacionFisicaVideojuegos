@@ -2,7 +2,7 @@
 
 Firework::Firework(Vector3 p, Vector3 v, Vector3 a, float mass, float damping) : Particle(FIREWORK, p, v, a, mass, damping)
 {
-
+	
 }
 
 Firework* Firework::clone() const
