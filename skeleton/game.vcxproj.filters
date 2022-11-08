@@ -33,6 +33,8 @@
     <ClInclude Include="GaussianParticleGenerator.hpp" />
     <ClInclude Include="firework.hpp" />
     <ClInclude Include="UniformParticleGenerator.hpp" />
+    <ClInclude Include="ForceGenerator.hpp" />
+    <ClInclude Include="ParticleForceRegistry.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

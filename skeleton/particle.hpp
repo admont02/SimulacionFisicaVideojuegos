@@ -18,6 +18,7 @@ protected:
 	Vector3 a;
 	float damping;
 	float mass;
+	float inverse_mass;
 	ParticleType _type;
 	Vector3 dir;
 	Vector4 color;
@@ -50,6 +51,17 @@ public:
 	inline void setLifeTime(double time) { _remaining_time = time; }
 	inline void setColor(Vector4 c) { color = c; }
 	void redimension(physx::PxTransform* newPos, double newMas, Vector4 newCol);
+
+	//fuerzas 
+
+	// Accumulated force
+	Vector3 force;
+	// Clears accumulated force
+	inline void clearForce() { force *= 0; }
+	// Add force to apply in next integration only
+	inline void addForce(const Vector3& f) { force += f; }
+	inline float getMass() { return mass; }
+	inline float getInvMass() { return inverse_mass; }
 
 };
 #endif

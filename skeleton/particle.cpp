@@ -9,6 +9,7 @@ Particle::Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, 
 	setVelocity(v);
 	setAcceleration(acc);
 	setMass(m);
+	inverse_mass = 1 / mass;
 	setDamping(d);
 	dir = GetCamera()->getDir();
 	if(_type==FIREBALL)
@@ -39,15 +40,25 @@ Particle::~Particle()
 
 void Particle::integrate(double t)
 {
-	//if (inverse_mass <= 0.0f) return;
+	if (inverse_mass <= 0.0f) return;
 	pose.p += vel * t;
 	pos = pose.p;
-	vel += (a*mass) * t;
+	//vel += (a*mass) * t;
+
+	Vector3 totalAcceleration = a;
+	totalAcceleration += force * inverse_mass;
+	// Update linear velocity
+	vel += totalAcceleration* t;
 	vel *= powf(damping, t);
 	
 
+
+	clearForce();
+
 	if (_remaining_time > 0) _remaining_time -= t;
 	else _alive = false;
+
+
 }
 void Particle::establishParticle(Vector3 P,Vector3 V) {
 	switch (_type)
