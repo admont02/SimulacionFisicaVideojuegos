@@ -11,6 +11,8 @@
 #include "firework.hpp"
 #include "UniformParticleGenerator.hpp"
 #include "GaussianParticleGenerator.hpp"
+#include "ForceGenerator.hpp"
+#include "ParticleForceRegistry.hpp"
 
 enum GeneratorType {
 	GAUSSIAN,UNIFORM
@@ -30,6 +32,9 @@ protected:
 	ParticleGenerator* _firework_gen;
 	UniformParticleGenerator* chorro;
 	GaussianParticleGenerator* chorroGauss;
+	GravityForceGenerator* _gravity_gen;
+	ParticleForceRegistry* _force_reg;
+	std::list<std::shared_ptr<ForceGenerator>> _force_generators;
 public:
 	ParticleSystem();
 	~ParticleSystem();

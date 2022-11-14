@@ -10,12 +10,18 @@ ParticleSystem::ParticleSystem() {
 	chorroGauss->setParticle(new Particle(FIREBALL, { 0,0,0 }, { 0,10,-40 }, { 0,-10,0 }, 2.0, 0.99, 2.0, { 1,0.7,1,1 }));
 	std::shared_ptr<ParticleGenerator> it2 = std::shared_ptr<ParticleGenerator>(chorroGauss);
 	_particle_generators.push_back(it2);
+
+	_force_reg = new ParticleForceRegistry();
+	auto _grav = std::shared_ptr<ForceGenerator>(new GravityForceGenerator({0,-9.8,0}));
+	_force_generators.push_back(_grav);
 }
 ParticleSystem::~ParticleSystem() {
 	while (!_particles.empty())
 		_particles.pop_front();
-	while (!_generators.empty())
+	while (!_particle_generators.empty())
 		_particle_generators.pop_front();
+	while (!_force_generators.empty())
+		_force_generators.pop_front();
 	for (int i = 0; i < _fireworks_pool.size(); i++)
 		delete _fireworks_pool[i];
 	_fireworks_pool.clear();
@@ -31,6 +37,7 @@ void ParticleSystem::updateParticles(double t) {
 			++par;
 		}
 		else {
+			_force_reg->deleteParticleRegistry(*par);
 			onParticleDeath(*par);
 			//auto copy = *par;
 			delete* par;
@@ -110,5 +117,6 @@ void ParticleSystem::update(double t) {
 
 	}
 	updateParticles(t);
+	_force_reg->updateForce(t);
 }
 

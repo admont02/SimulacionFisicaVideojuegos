@@ -18,7 +18,7 @@ public:
 
 class GravityForceGenerator : public ForceGenerator {
 public:
-	GravityForceGenerator(const Vector3& g);
+	GravityForceGenerator(const Vector3& g) { _gravity = g; }
 	virtual void updateForce(Particle* p, double t) {
 		if (fabs(p->getInvMass()) < 1e-10) return;
 		p->addForce(_gravity * p->getMass());
