@@ -32,9 +32,10 @@ protected:
 	ParticleGenerator* _firework_gen;
 	UniformParticleGenerator* chorro;
 	GaussianParticleGenerator* chorroGauss;
-	GravityForceGenerator* _gravity_gen;
+
 	ParticleForceRegistry* _force_reg;
 	std::list<std::shared_ptr<ForceGenerator>> _force_generators;
+	
 public:
 	ParticleSystem();
 	~ParticleSystem();
@@ -47,12 +48,12 @@ public:
 	inline void addGenerator(std::shared_ptr<ParticleGenerator> g) { _particle_generators.push_back(g); }
 	
 	ParticleGenerator* getParticleGenerator(std::string name);
-
+	ForceGenerator* getForceGenerator(std::string name);
 	void activeParticleGenerator(GeneratorType gt);
 	//firework
 	void shootFirework(int type);
 	void onParticleDeath(Particle* p);
 	
-
+	void setGravityEffect();
 };
 #endif

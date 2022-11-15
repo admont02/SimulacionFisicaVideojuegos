@@ -13,6 +13,7 @@ ParticleSystem::ParticleSystem() {
 
 	_force_reg = new ParticleForceRegistry();
 	auto _grav = std::shared_ptr<ForceGenerator>(new GravityForceGenerator({0,-9.8,0}));
+	_grav->_name = "GRAV";
 	_force_generators.push_back(_grav);
 }
 ParticleSystem::~ParticleSystem() {
@@ -69,6 +70,13 @@ ParticleGenerator* ParticleSystem::getParticleGenerator(std::string name)
 			return p.get();
 	return nullptr;
 }
+ForceGenerator* ParticleSystem::getForceGenerator(std::string name)
+{
+	for (auto f : _force_generators)
+		if (f->_name == name)
+			return f.get();
+	return nullptr;
+}
 void ParticleSystem::activeParticleGenerator(GeneratorType gt) {
 	switch (gt)
 	{
@@ -120,3 +128,27 @@ void ParticleSystem::update(double t) {
 	_force_reg->updateForce(t);
 }
 
+void ParticleSystem::setGravityEffect()
+{
+	for (auto& p : _particles)
+		_force_reg->addRegistry(getForceGenerator("GRAV"), p);
+	/*ForceGenerator* gravity = nullptr;
+	for (auto& fg : _force_generators) {
+		if (fg->getName() == "Gravity") {
+			gravity = fg;
+			break;
+		}
+	}
+
+	if (gravity != nullptr) {
+		if (_grav_on) {
+			_force_reg->deleteForce(gravity);
+		}
+		else {
+			for (auto& p : _particles)
+				_force_reg->addRegistry(gravity, p);
+		}
+	}
+
+	_grav_on = !_grav_on;*/
+}

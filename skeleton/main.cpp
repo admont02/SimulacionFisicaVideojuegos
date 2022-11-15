@@ -32,7 +32,7 @@ PxScene* gScene = NULL;
 ContactReportCallback gContactReportCallback;
 
 Particle* par = NULL;
-ParticleSystem* shootSys=NULL;
+ParticleSystem* shootSys = NULL;
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -123,6 +123,10 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	case 'F':
 	{
 		shootSys->shootFirework(0);
+		break;
+	}
+	case '1': {
+		shootSys->setGravityEffect();
 		break;
 	}
 	default:

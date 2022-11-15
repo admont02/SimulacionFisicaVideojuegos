@@ -18,6 +18,7 @@ Particle::Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, 
 	setAlive(true);
 	renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(mass)), &pose, { 1, 0.5, 0, 1 });
 	//RegisterRenderItem(renderItem);
+	clearForce();
 }
 Particle::Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, float d, double t, Vector4 col) {
 	_type = Pt;
@@ -25,12 +26,14 @@ Particle::Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, 
 	vel = v;
 	a = acc;
 	mass = m;
+	inverse_mass = 1 / mass;
 	damping = d;
 	_remaining_time = t;
 	color = col;
 	_alive = true;
 	renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(mass)), &pose, color);
 	//RegisterRenderItem(renderItem);
+	clearForce();
 }
 
 Particle::~Particle()
