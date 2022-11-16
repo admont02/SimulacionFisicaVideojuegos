@@ -35,6 +35,7 @@ protected:
 	std::shared_ptr<ForceGenerator>_grav;
 	std::shared_ptr<ForceGenerator>_wind;
 	std::shared_ptr<ForceGenerator>_whirlwind;
+	ExplosionForceGenerator* _exp;
 
 	ParticleForceRegistry* _force_reg;
 	std::list<std::shared_ptr<ForceGenerator>> _force_generators;
@@ -58,5 +59,6 @@ public:
 	void onParticleDeath(Particle* p);
 	
 	void setGravityEffect();
+	void explosion();
 };
 #endif

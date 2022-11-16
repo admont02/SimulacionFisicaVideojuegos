@@ -129,6 +129,10 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		shootSys->setGravityEffect();
 		break;
 	}
+	case '2': {
+		shootSys->explosion();
+		break;
+	}
 	default:
 		break;
 	}

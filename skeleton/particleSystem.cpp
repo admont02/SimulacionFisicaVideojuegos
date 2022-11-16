@@ -16,15 +16,20 @@ ParticleSystem::ParticleSystem() {
 	_grav->_name = "GRAV";
 	_force_generators.push_back(_grav);
 
-	 _wind = std::shared_ptr<ForceGenerator>(new WindForceGenerator(0.6, 0, { 20,0,0 }));
+	_wind = std::shared_ptr<ForceGenerator>(new WindForceGenerator(0.6, 0, { 20,0,0 }));
 	_wind->_name = "WIND";
 	//_wind->active = true;
 	_force_generators.push_back(_wind);
 
-	_whirlwind = std::shared_ptr<ForceGenerator>(new WhirlwindForceGenerator(3.9,{10,0,0},{0,0,0}));
+	_whirlwind = std::shared_ptr<ForceGenerator>(new WhirlwindForceGenerator(3.9, { 10,0,0 }, { 0,0,0 }));
 	_whirlwind->_name = "WHIRLWIND";
-	_whirlwind->active = true;
+	//_whirlwind->active = true;
 	_force_generators.push_back(_whirlwind);
+
+	_exp = new ExplosionForceGenerator({0,0,0},5000,100);
+	_exp->_name = "EXPLOSION";
+	//_exp->active = true;
+	//_force_generators.push_back(_exp);
 }
 ParticleSystem::~ParticleSystem() {
 	while (!_particles.empty())
@@ -36,6 +41,8 @@ ParticleSystem::~ParticleSystem() {
 	for (int i = 0; i < _fireworks_pool.size(); i++)
 		delete _fireworks_pool[i];
 	_fireworks_pool.clear();
+
+	
 }
 void ParticleSystem::shootParticle(ParticleType t) {
 	_particles.push_back(new Particle(t, pose.p, vel, { 0,10,0 }, 10.0, 0.99));
@@ -49,6 +56,8 @@ void ParticleSystem::updateParticles(double t) {
 				_force_reg->addRegistry(getForceGenerator("WIND"), *par);
 			if (getForceGenerator("WHIRLWIND")->active)
 				_force_reg->addRegistry(getForceGenerator("WHIRLWIND"), *par);
+			/*if (getForceGenerator("EXPLOSION")->active)
+				_force_reg->addRegistry(getForceGenerator("EXPLOSION"), *par);*/
 			++par;
 		}
 		else {
@@ -147,4 +156,12 @@ void ParticleSystem::setGravityEffect()
 	for (auto& p : _particles)
 		_force_reg->addRegistry(getForceGenerator("GRAV"), p);
 
+}
+
+void ParticleSystem::explosion()
+{
+	for (auto p : _particles) {
+		_exp->setTime(GetLastTime());
+		_force_reg->addRegistry(_exp, p);
+	}
 }
