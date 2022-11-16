@@ -6,15 +6,20 @@ ParticleSystem::ParticleSystem() {
 	chorro->setParticle(new Particle(FIREBALL, { 0,0,0 }, { 0,10,-40 }, { 0,-10,0 }, 2.0, 0.99, 2.0, { 0.2,0.5,0,1 }));
 	std::shared_ptr<ParticleGenerator> it = std::shared_ptr<ParticleGenerator>(chorro);
 	_particle_generators.push_back(it);
-	chorroGauss= new GaussianParticleGenerator("GAUSSIAN", FIREBALL, 100, { 0,10,0 }, { 0,0,0 }, { 2,1,2 }, { 2,2,2 }, 5.0);
+	chorroGauss = new GaussianParticleGenerator("GAUSSIAN", FIREBALL, 100, { 0,10,0 }, { 0,0,0 }, { 2,1,2 }, { 2,2,2 }, 5.0);
 	chorroGauss->setParticle(new Particle(FIREBALL, { 0,0,0 }, { 0,10,-40 }, { 0,-10,0 }, 2.0, 0.99, 2.0, { 1,0.7,1,1 }));
 	std::shared_ptr<ParticleGenerator> it2 = std::shared_ptr<ParticleGenerator>(chorroGauss);
 	_particle_generators.push_back(it2);
 
 	_force_reg = new ParticleForceRegistry();
-	auto _grav = std::shared_ptr<ForceGenerator>(new GravityForceGenerator({0,-9.8,0}));
+	_grav = std::shared_ptr<ForceGenerator>(new GravityForceGenerator({ 0,-9.8,0 }));
 	_grav->_name = "GRAV";
 	_force_generators.push_back(_grav);
+
+	 _wind = std::shared_ptr<ForceGenerator>(new WindForceGenerator(0.6, 0, { 20,0,0 }));
+	_wind->_name = "WIND";
+	_wind->active = true;
+	_force_generators.push_back(_wind);
 }
 ParticleSystem::~ParticleSystem() {
 	while (!_particles.empty())
@@ -35,6 +40,9 @@ void ParticleSystem::updateParticles(double t) {
 	while (par != _particles.end()) {
 		if ((*par)->getAlive()) {
 			(*par)->integrate(t);
+			if (getForceGenerator("WIND")->active)
+				_force_reg->addRegistry(getForceGenerator("WIND"), *par);
+
 			++par;
 		}
 		else {
@@ -132,23 +140,5 @@ void ParticleSystem::setGravityEffect()
 {
 	for (auto& p : _particles)
 		_force_reg->addRegistry(getForceGenerator("GRAV"), p);
-	/*ForceGenerator* gravity = nullptr;
-	for (auto& fg : _force_generators) {
-		if (fg->getName() == "Gravity") {
-			gravity = fg;
-			break;
-		}
-	}
 
-	if (gravity != nullptr) {
-		if (_grav_on) {
-			_force_reg->deleteForce(gravity);
-		}
-		else {
-			for (auto& p : _particles)
-				_force_reg->addRegistry(gravity, p);
-		}
-	}
-
-	_grav_on = !_grav_on;*/
 }

@@ -255,6 +255,7 @@
   <ItemGroup>
     <ClCompile Include="callbacks.cpp" />
     <ClCompile Include="firework.cpp" />
+    <ClCompile Include="ForceGenerator.cpp" />
     <ClCompile Include="GaussianParticleGenerator.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="particle.cpp" />

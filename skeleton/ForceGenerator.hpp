@@ -11,6 +11,7 @@ public:
 	virtual void updateForce(Particle* particle, double duration) = 0;
 	std::string _name;
 	double t = -1e10;//if starting negative --> eternal
+	bool active = false;
 };
 #endif
 #pragma once
@@ -37,7 +38,10 @@ protected:
 class ParticleDragGenerator : public ForceGenerator {
 public:
 	ParticleDragGenerator();
-	ParticleDragGenerator(const float k1, const float k2);
+	ParticleDragGenerator(const float k1, const float k2) {
+		_k1 = k1;
+		_k2 = k2;
+	}
 
 	virtual void updateForce(Particle* particle, double t) {
 		if (fabs(particle->getInvMass()) < 1e-10) return;
@@ -60,4 +64,14 @@ public:
 protected:
 	float _k1;
 	float _k2;
+};
+class WindForceGenerator : public ParticleDragGenerator {
+protected:
+	Vector3 vel;
+public:
+	WindForceGenerator();
+	WindForceGenerator(const float k1, const float k2, Vector3 _vel);
+	void updateForce(Particle* particle, double t) override;
+
+
 };

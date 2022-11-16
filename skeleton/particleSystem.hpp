@@ -32,6 +32,8 @@ protected:
 	ParticleGenerator* _firework_gen;
 	UniformParticleGenerator* chorro;
 	GaussianParticleGenerator* chorroGauss;
+	std::shared_ptr<ForceGenerator>_grav;
+	std::shared_ptr<ForceGenerator>_wind;
 
 	ParticleForceRegistry* _force_reg;
 	std::list<std::shared_ptr<ForceGenerator>> _force_generators;
