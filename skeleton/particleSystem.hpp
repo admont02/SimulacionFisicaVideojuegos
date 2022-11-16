@@ -34,6 +34,7 @@ protected:
 	GaussianParticleGenerator* chorroGauss;
 	std::shared_ptr<ForceGenerator>_grav;
 	std::shared_ptr<ForceGenerator>_wind;
+	std::shared_ptr<ForceGenerator>_whirlwind;
 
 	ParticleForceRegistry* _force_reg;
 	std::list<std::shared_ptr<ForceGenerator>> _force_generators;

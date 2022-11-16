@@ -6,7 +6,7 @@ ParticleSystem::ParticleSystem() {
 	chorro->setParticle(new Particle(FIREBALL, { 0,0,0 }, { 0,10,-40 }, { 0,-10,0 }, 2.0, 0.99, 2.0, { 0.2,0.5,0,1 }));
 	std::shared_ptr<ParticleGenerator> it = std::shared_ptr<ParticleGenerator>(chorro);
 	_particle_generators.push_back(it);
-	chorroGauss = new GaussianParticleGenerator("GAUSSIAN", FIREBALL, 100, { 0,10,0 }, { 0,0,0 }, { 2,1,2 }, { 2,2,2 }, 5.0);
+	chorroGauss = new GaussianParticleGenerator("GAUSSIAN", FIREBALL, 10, { 0,10,0 }, { 0,0,0 }, { 2,1,2 }, { 2,2,2 }, 5.0);
 	chorroGauss->setParticle(new Particle(FIREBALL, { 0,0,0 }, { 0,10,-40 }, { 0,-10,0 }, 2.0, 0.99, 2.0, { 1,0.7,1,1 }));
 	std::shared_ptr<ParticleGenerator> it2 = std::shared_ptr<ParticleGenerator>(chorroGauss);
 	_particle_generators.push_back(it2);
@@ -18,8 +18,13 @@ ParticleSystem::ParticleSystem() {
 
 	 _wind = std::shared_ptr<ForceGenerator>(new WindForceGenerator(0.6, 0, { 20,0,0 }));
 	_wind->_name = "WIND";
-	_wind->active = true;
+	//_wind->active = true;
 	_force_generators.push_back(_wind);
+
+	_whirlwind = std::shared_ptr<ForceGenerator>(new WhirlwindForceGenerator(3.9,{10,0,0},{0,0,0}));
+	_whirlwind->_name = "WHIRLWIND";
+	_whirlwind->active = true;
+	_force_generators.push_back(_whirlwind);
 }
 ParticleSystem::~ParticleSystem() {
 	while (!_particles.empty())
@@ -42,7 +47,8 @@ void ParticleSystem::updateParticles(double t) {
 			(*par)->integrate(t);
 			if (getForceGenerator("WIND")->active)
 				_force_reg->addRegistry(getForceGenerator("WIND"), *par);
-
+			if (getForceGenerator("WHIRLWIND")->active)
+				_force_reg->addRegistry(getForceGenerator("WHIRLWIND"), *par);
 			++par;
 		}
 		else {

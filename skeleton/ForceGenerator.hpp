@@ -75,3 +75,29 @@ public:
 
 
 };
+class WhirlwindForceGenerator : public WindForceGenerator {
+protected:
+	float k;
+	Vector3 c;
+public:
+	WhirlwindForceGenerator();
+	WhirlwindForceGenerator(const float _k, Vector3 _vel, Vector3 _cen) : WindForceGenerator(_k, 0, _vel) {
+		k = _k;
+		c = _cen;
+	}
+	void updateForce(Particle* particle, double t) override {
+		if (fabs(particle->getInvMass()) < 1e-10) return;
+
+		vel = { k * (-(particle->getPosition().z - c.z)),k * (35-(particle->getPosition().y - c.y)),k *(particle->getPosition().x - c.x)};
+
+		Vector3 v = particle->getVelocity()-vel;
+		float drag_coef = v.normalize();
+		Vector3 dragF;
+		drag_coef = _k1 * drag_coef + _k2 * drag_coef * drag_coef;
+		dragF = -v * drag_coef;
+		//Apply drag force
+		//std::cout << dragF.x << "/t" << dragF.y << "/t" << dragF.z << "/t" << std::endl;
+		particle->addForce(dragF);
+
+	}
+};
