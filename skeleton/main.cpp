@@ -130,6 +130,14 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	}
 	case '2': {
+		shootSys->turnOnForce("WIND");
+		break;
+	}
+	case '3': {
+		shootSys->turnOnForce("WHIRLWIND");
+		break;
+	}
+	case '4': {
 		shootSys->explosion();
 		break;
 	}

@@ -165,3 +165,15 @@ void ParticleSystem::explosion()
 		_force_reg->addRegistry(_exp, p);
 	}
 }
+
+void ParticleSystem::turnOffAllForces()
+{
+	for (auto fg : _force_generators)
+		fg->active = false;
+}
+
+void ParticleSystem::turnOnForce(std::string name)
+{
+	turnOffAllForces();
+	getForceGenerator(name)->active = true;
+}

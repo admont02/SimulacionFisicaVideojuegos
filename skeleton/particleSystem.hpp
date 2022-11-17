@@ -60,5 +60,7 @@ public:
 	
 	void setGravityEffect();
 	void explosion();
+	void turnOffAllForces();
+	void turnOnForce(std::string name);
 };
 #endif
