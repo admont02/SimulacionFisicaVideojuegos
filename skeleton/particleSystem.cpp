@@ -42,6 +42,7 @@ ParticleSystem::~ParticleSystem() {
 		delete _fireworks_pool[i];
 	_fireworks_pool.clear();
 
+	delete _exp;
 	
 }
 void ParticleSystem::shootParticle(ParticleType t) {

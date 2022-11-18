@@ -141,6 +141,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		shootSys->explosion();
 		break;
 	}
+	case '5': shootSys->turnOffAllForces();
+		break;
 	default:
 		break;
 	}
