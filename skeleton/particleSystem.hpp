@@ -62,5 +62,6 @@ public:
 	void explosion();
 	void turnOffAllForces();
 	void turnOnForce(std::string name);
+	void generateSpringDemo();
 };
 #endif

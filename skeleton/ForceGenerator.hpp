@@ -149,3 +149,32 @@ public:
 	}
 	void setTime(double t) { _time = t; }
 };
+
+class SpringForceGenerator : public ForceGenerator {
+public:
+	SpringForceGenerator(double k, double resting_length, Particle* other) {
+		_k = k;
+		_resting_length = resting_length;
+		_other = other;
+	}
+	virtual void updateForce(Particle* particle, double t) {
+		Vector3 force = _other->getPosition() - particle->getPosition();
+
+		const float length = force.normalize();
+		const float delta_x = length - _resting_length;
+
+		force *= delta_x * _k;
+
+		particle->addForce(force);
+	}
+
+	inline void setk(double k) { _k = k; };
+
+	~SpringForceGenerator() = default;
+
+protected:
+	double _k;
+	double _resting_length;
+	Particle* _other;
+
+};

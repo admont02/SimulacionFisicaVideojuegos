@@ -178,3 +178,8 @@ void ParticleSystem::turnOnForce(std::string name)
 	turnOffAllForces();
 	getForceGenerator(name)->active = true;
 }
+
+void ParticleSystem::generateSpringDemo()
+{
+	//Particle* p1=new Particle()
+}
