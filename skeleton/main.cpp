@@ -143,6 +143,12 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	}
 	case '5': shootSys->turnOffAllForces();
 		break;
+	case '+': shootSys->increaseKSpring();
+		break;
+	case '-': shootSys->decreaseKSpring();
+		break;
+	case 'S': shootSys->generateSpringDemo();
+		break;
 	default:
 		break;
 	}

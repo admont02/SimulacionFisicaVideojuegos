@@ -15,7 +15,7 @@
 #include "ParticleForceRegistry.hpp"
 
 enum GeneratorType {
-	GAUSSIAN,UNIFORM
+	GAUSSIAN, UNIFORM
 };
 class ParticleSystem {
 protected:
@@ -39,7 +39,8 @@ protected:
 
 	ParticleForceRegistry* _force_reg;
 	std::list<std::shared_ptr<ForceGenerator>> _force_generators;
-	
+	SpringForceGenerator* springF;
+
 public:
 	ParticleSystem();
 	~ParticleSystem();
@@ -50,18 +51,22 @@ public:
 	void update(double t);
 	void addGenerator(GeneratorType type);
 	inline void addGenerator(std::shared_ptr<ParticleGenerator> g) { _particle_generators.push_back(g); }
-	
+
 	ParticleGenerator* getParticleGenerator(std::string name);
 	ForceGenerator* getForceGenerator(std::string name);
 	void activeParticleGenerator(GeneratorType gt);
 	//firework
 	void shootFirework(int type);
 	void onParticleDeath(Particle* p);
-	
+
 	void setGravityEffect();
 	void explosion();
 	void turnOffAllForces();
 	void turnOnForce(std::string name);
 	void generateSpringDemo();
+	//aumentar/disminuir k
+	inline void increaseKSpring() { springF->setk(springF->getK() + 15); }
+	inline void decreaseKSpring() { springF->setk(springF->getK() - 15); }
+
 };
 #endif

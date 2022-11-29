@@ -89,9 +89,9 @@ public:
 		if (fabs(particle->getInvMass()) < 1e-10) return;
 
 		auto p = particle->getPosition();
-		vel = { k * (-(p.z - c.z)),k * (35-(p.y - c.y)),k *(p.x - c.x)};
+		vel = { k * (-(p.z - c.z)),k * (35 - (p.y - c.y)),k * (p.x - c.x) };
 
-		Vector3 v = particle->getVelocity()-vel;
+		Vector3 v = particle->getVelocity() - vel;
 		float drag_coef = v.normalize();
 		Vector3 dragF;
 		drag_coef = _k1 * drag_coef + _k2 * drag_coef * drag_coef;
@@ -110,9 +110,9 @@ protected:
 	double _R0;
 
 	Vector3 _f;
-	float _m=30.0f;
-	
-	
+	float _m = 30.0f;
+
+
 public:
 	float _time;
 	ExplosionForceGenerator();
@@ -131,7 +131,7 @@ public:
 
 		auto p = particle->getPosition();
 
-		auto r= sqrt(pow((p.x - _p.x), 2) + pow((p.y - _p.y), 2) + pow((p.z - _p.z), 2));
+		auto r = sqrt(pow((p.x - _p.x), 2) + pow((p.y - _p.y), 2) + pow((p.z - _p.z), 2));
 
 		if (r < _R)
 		{
@@ -142,7 +142,7 @@ public:
 			_f *= a * b;
 		}
 
-		
+
 		//std::cout << dragF.x << "/t" << dragF.y << "/t" << dragF.z << "/t" << std::endl;
 		particle->addForce(_f);
 		_R = _R0 + 343 * t1;
@@ -170,6 +170,8 @@ public:
 
 	inline void setk(double k) { _k = k; };
 
+	inline double getK() { return _k; }
+
 	~SpringForceGenerator() = default;
 
 protected:
@@ -177,4 +179,17 @@ protected:
 	double _resting_length;
 	Particle* _other;
 
+};
+class AnchoredSpringFG : public SpringForceGenerator{
+public:
+	AnchoredSpringFG(double k, double resting, Vector3 anchor_pos): SpringForceGenerator(k, resting, nullptr)
+	{
+		//_other = new Particle(anchor_pos, { 0,0,0 }, { 0, 0, 0 }, { 0.0, 0.6, 0.0, 1.0 }, 0.9, 1000.0, 0.8);
+		_other->setMass(1e6);
+		
+	}
+
+	~AnchoredSpringFG() {
+		delete _other;
+	}
 };

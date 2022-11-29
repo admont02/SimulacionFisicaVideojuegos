@@ -182,4 +182,17 @@ void ParticleSystem::turnOnForce(std::string name)
 void ParticleSystem::generateSpringDemo()
 {
 	//Particle* p1=new Particle()
+	Particle* p1 = new Particle(FIREBALL, { -10,10,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 3.0, { 0.7,0.4,0.5,1.0 });
+	Particle* p2 = new Particle(FIREBALL, { 10,10,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 3.0, { 0.7,0.4,0.5,1.0 });
+
+	springF = new SpringForceGenerator(1, 10, p2);
+	_force_reg->addRegistry(springF, p1);
+	auto f2 = new SpringForceGenerator(1, 10, p1);
+	_force_reg->addRegistry(f2, p2);
+
+	//_force_generators.push_back(p1);
+
+	_particles.push_back(p1);
+	_particles.push_back(p2);
+
 }
