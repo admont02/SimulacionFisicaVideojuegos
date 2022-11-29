@@ -204,10 +204,55 @@ void ParticleSystem::generateSpringDemo()
 
 
 	Particle* p3 = new Particle(FIREBALL, { -10,20,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 30.0, { 0.5,0.2,0.0,1.0 });
-	_particles.push_back(p3);
+	
 
 	auto f3 = std::shared_ptr<ForceGenerator>(new AnchoredSpringFG(1, 10, { 10.0,20.0,0.0 }));
+	f3->_name = "ANCHO";
 	_force_generators.push_back(f3);
 
 	_force_reg->addRegistry(f3.get(), p3);
+	_particles.push_back(p3);
+}
+
+void ParticleSystem::generateSlinkyDemo()
+{
+	//particulas
+	Particle* p1 = new Particle(FIREBALL, { 0,60,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 30.0, { 0.7,0.4,1.0,1.0 });
+	Particle* p2 = new Particle(FIREBALL, { 0,50,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 30.0, { 0.9,0.1,0.5,1.0 });
+	Particle* p3 = new Particle(FIREBALL, { 0,40,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 30.0, { 0.7,0.4,1.0,1.0 });
+	Particle* p4 = new Particle(FIREBALL, { 0,30,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 30.0, { 0.9,0.1,0.5,1.0 });
+	Particle* p5 = new Particle(FIREBALL, { 0,20,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 30.0, { 0.7,0.4,1.0,1.0 });
+	Particle* p6 = new Particle(FIREBALL, { 0,10,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 30.0, { 0.9,0.1,0.5,1.0 });
+	_particles.push_back(p1);
+	_particles.push_back(p2);
+	_particles.push_back(p3);
+	_particles.push_back(p5);
+	_particles.push_back(p4);
+	_particles.push_back(p6);
+
+
+	auto f1 = std::shared_ptr<ForceGenerator>(new SpringForceGenerator(1, 1, p1));
+	_force_generators.push_back(f1);
+	_force_reg->addRegistry(f1.get(), p2);
+
+	auto f2 = std::shared_ptr<ForceGenerator>(new SpringForceGenerator(1, 1,p2 ));
+	_force_generators.push_back(f2);
+	_force_reg->addRegistry(f2.get(), p3);
+	auto f3 = std::shared_ptr<ForceGenerator>(new SpringForceGenerator(1, 1, p3));
+	_force_generators.push_back(f3);
+	_force_reg->addRegistry(f3.get(), p4);
+
+	auto f4 = std::shared_ptr<ForceGenerator>(new SpringForceGenerator(1, 1, p4));
+	_force_generators.push_back(f4);
+	_force_reg->addRegistry(f4.get(), p5);
+	auto f5 = std::shared_ptr<ForceGenerator>(new SpringForceGenerator(1, 1, p5));
+	_force_generators.push_back(f5);
+	_force_reg->addRegistry(f5.get(), p6);
+
+	_force_reg->addRegistry(getForceGenerator("GRAV"), p2);
+	_force_reg->addRegistry(getForceGenerator("GRAV"), p3);
+	_force_reg->addRegistry(getForceGenerator("GRAV"), p4);
+	_force_reg->addRegistry(getForceGenerator("GRAV"), p5);
+	_force_reg->addRegistry(getForceGenerator("GRAV"), p6);
+
 }

@@ -149,6 +149,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	case '7': shootSys->generateSpringDemo();
 		break;
+	case '8': shootSys->generateSlinkyDemo();
+		break;
 	default:
 		break;
 	}

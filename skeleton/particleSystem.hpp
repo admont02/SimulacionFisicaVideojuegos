@@ -64,9 +64,16 @@ public:
 	void turnOffAllForces();
 	void turnOnForce(std::string name);
 	void generateSpringDemo();
+	void generateSlinkyDemo();
 	//aumentar/disminuir k
-	inline void increaseKSpring() { springF->setk(springF->getK() + 15); }
-	inline void decreaseKSpring() { springF->setk(springF->getK() - 15); }
+	inline void increaseKSpring() {
+		auto a= dynamic_cast<AnchoredSpringFG*>(getForceGenerator("ANCHO"));
+		a->setk(a->getK() + 15.0);
+	}
+	inline void decreaseKSpring() {
+		auto a = dynamic_cast<AnchoredSpringFG*>(getForceGenerator("ANCHO"));
+		a->setk(a->getK() - 15.0);
+	}
 
 };
 #endif
