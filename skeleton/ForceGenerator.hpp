@@ -191,3 +191,50 @@ public:
 		delete _other;
 	}
 };
+
+class BuoyancyForceGenerator : public ForceGenerator
+{
+public:
+	BuoyancyForceGenerator(float h, float V, float d) {
+		_height = h;
+		_volume = V;
+		_liquid_density = d;
+
+		_liquid_particle = new Particle(PLANE, { 0,5,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 30000.0, { 0.5,0.8,.7,1.0 });
+	}
+
+	virtual void updateForce(Particle* particle, double t) {
+		float h = particle->getPosition().y;
+		float h0 = _liquid_particle->getPosition().y;
+
+		Vector3 f(0, 0, 0);
+		float immersed = 0.0;
+
+		if (h - h0 > _height * 0.5)
+		{
+			immersed = 0.0;
+		}
+		else if (h0 - h > _height * 0.5) {
+			immersed = 1.0;
+		}
+		else
+		{
+			immersed = (h0 - h) / _height + 0.5;
+		}
+
+		f.y = _liquid_density * _volume * immersed * 9.8;
+
+		particle->addForce(f);
+	}
+
+	virtual ~BuoyancyForceGenerator() = default;
+
+protected:
+
+	float _height;
+	float _volume;
+	float _liquid_density;
+	float _gravity = 9.8;
+
+	Particle* _liquid_particle;
+};

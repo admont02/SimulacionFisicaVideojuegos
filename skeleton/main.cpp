@@ -151,6 +151,8 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	case '8': shootSys->generateSlinkyDemo();
 		break;
+	case '9': shootSys->generateBuoyancyDemo();
+		break;
 	default:
 		break;
 	}

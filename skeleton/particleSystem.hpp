@@ -65,6 +65,7 @@ public:
 	void turnOnForce(std::string name);
 	void generateSpringDemo();
 	void generateSlinkyDemo();
+	void generateBuoyancyDemo();
 	//aumentar/disminuir k
 	inline void increaseKSpring() {
 		auto a= dynamic_cast<AnchoredSpringFG*>(getForceGenerator("ANCHO"));

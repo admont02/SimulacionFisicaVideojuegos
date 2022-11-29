@@ -256,3 +256,15 @@ void ParticleSystem::generateSlinkyDemo()
 	_force_reg->addRegistry(getForceGenerator("GRAV"), p6);
 
 }
+
+void ParticleSystem::generateBuoyancyDemo()
+{
+	Particle* p = new Particle(FIREBALL, { 10,10,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 30.0, { 0.9,0.1,0.5,1.0 });
+	_particles.push_back(p);
+
+	auto b = std::shared_ptr<ForceGenerator>(new BuoyancyForceGenerator(10, 0.5, 1000));
+	_force_generators.push_back(b);
+	_force_reg->addRegistry(b.get(), p);
+
+	_force_reg->addRegistry(getForceGenerator("GRAV"), p);
+}

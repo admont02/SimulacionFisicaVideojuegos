@@ -33,6 +33,8 @@ Particle::Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, 
 	_alive = true;
 	if (_type == BOX)
 		renderItem = new RenderItem(CreateShape(physx::PxBoxGeometry(1.0f,1.0f,1.0f)), &pose, color);
+	else if(_type==PLANE)
+		renderItem = new RenderItem(CreateShape(physx::PxBoxGeometry(50.0f, 1.0f, 50.0f)), &pose, color);
 	else
 		renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(mass)), &pose, color);
 	//RegisterRenderItem(renderItem);
