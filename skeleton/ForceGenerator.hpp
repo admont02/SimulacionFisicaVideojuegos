@@ -184,9 +184,7 @@ class AnchoredSpringFG : public SpringForceGenerator{
 public:
 	AnchoredSpringFG(double k, double resting, Vector3 anchor_pos): SpringForceGenerator(k, resting, nullptr)
 	{
-		//_other = new Particle(anchor_pos, { 0,0,0 }, { 0, 0, 0 }, { 0.0, 0.6, 0.0, 1.0 }, 0.9, 1000.0, 0.8);
-		_other->setMass(1e6);
-		
+		_other = new Particle(BOX,anchor_pos, { 0,0,0 }, { 0, 0, 0 },1e6,0.9,30.0, { .8, 0.6, 0.0, 1.0 });
 	}
 
 	~AnchoredSpringFG() {

@@ -12,8 +12,8 @@ Particle::Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, 
 	inverse_mass = 1 / mass;
 	setDamping(d);
 	dir = GetCamera()->getDir();
-	if(_type==FIREBALL)
-		establishParticle(GetCamera()->getEye(), {0,10.0f,0});
+	if (_type == FIREBALL)
+		establishParticle(GetCamera()->getEye(), { 0,10.0f,0 });
 	//setPosition({ GetCamera()->getEye()});
 	setAlive(true);
 	renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(mass)), &pose, { 1, 0.5, 0, 1 });
@@ -31,7 +31,10 @@ Particle::Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, 
 	_remaining_time = t;
 	color = col;
 	_alive = true;
-	renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(mass)), &pose, color);
+	if (_type == BOX)
+		renderItem = new RenderItem(CreateShape(physx::PxBoxGeometry(1.0f,1.0f,1.0f)), &pose, color);
+	else
+		renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(mass)), &pose, color);
 	//RegisterRenderItem(renderItem);
 	clearForce();
 }
@@ -51,9 +54,9 @@ void Particle::integrate(double t)
 	Vector3 totalAcceleration = a;
 	totalAcceleration += force * inverse_mass;
 	// Update linear velocity
-	vel += totalAcceleration* t;
+	vel += totalAcceleration * t;
 	vel *= powf(damping, t);
-	
+
 
 
 	clearForce();
@@ -63,7 +66,7 @@ void Particle::integrate(double t)
 
 
 }
-void Particle::establishParticle(Vector3 P,Vector3 V) {
+void Particle::establishParticle(Vector3 P, Vector3 V) {
 	switch (_type)
 	{
 	case FIREBALL:
@@ -77,12 +80,12 @@ void Particle::establishParticle(Vector3 P,Vector3 V) {
 		break;
 	default:
 		break;
-		
+
 	}
 }
 Particle* Particle::clone() const
 {
-	auto cloneP = new Particle(_type,pos,vel,a,mass,damping,_remaining_time,color);
+	auto cloneP = new Particle(_type, pos, vel, a, mass, damping, _remaining_time, color);
 	return cloneP;
 
 }

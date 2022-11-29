@@ -6,7 +6,7 @@
 #include "RenderUtils.hpp"
 
 enum ParticleType {
-	FIREBALL, FIREWORK
+	FIREBALL, FIREWORK,BOX
 };
 
 class Particle {

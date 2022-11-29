@@ -26,7 +26,7 @@ ParticleSystem::ParticleSystem() {
 	//_whirlwind->active = true;
 	_force_generators.push_back(_whirlwind);
 
-	_exp = new ExplosionForceGenerator({0,0,0},5000,100);
+	_exp = new ExplosionForceGenerator({ 0,0,0 }, 5000, 100);
 	_exp->_name = "EXPLOSION";
 	//_exp->active = true;
 	//_force_generators.push_back(_exp);
@@ -43,7 +43,7 @@ ParticleSystem::~ParticleSystem() {
 	_fireworks_pool.clear();
 
 	delete _exp;
-	
+
 }
 void ParticleSystem::shootParticle(ParticleType t) {
 	_particles.push_back(new Particle(t, pose.p, vel, { 0,10,0 }, 10.0, 0.99));
@@ -182,17 +182,32 @@ void ParticleSystem::turnOnForce(std::string name)
 void ParticleSystem::generateSpringDemo()
 {
 	//Particle* p1=new Particle()
-	Particle* p1 = new Particle(FIREBALL, { -10,10,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 3.0, { 0.7,0.4,0.5,1.0 });
-	Particle* p2 = new Particle(FIREBALL, { 10,10,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 3.0, { 0.7,0.4,0.5,1.0 });
+	Particle* p1 = new Particle(FIREBALL, { -10,10,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 30.0, { 0.7,0.4,1.0,1.0 });
+	Particle* p2 = new Particle(FIREBALL, { 10,10,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 30.0, { 0.9,0.1,0.5,1.0 });
 
-	springF = new SpringForceGenerator(1, 10, p2);
-	_force_reg->addRegistry(springF, p1);
-	auto f2 = new SpringForceGenerator(1, 10, p1);
-	_force_reg->addRegistry(f2, p2);
+	auto f1 = std::shared_ptr<ForceGenerator>(new SpringForceGenerator(1, 10, p2));
+	f1->_name = "SPRING1";
+	//f1->active = true;
+	auto f2 = std::shared_ptr<ForceGenerator>(new SpringForceGenerator(1, 10, p1));
+	_force_generators.push_back(f1);
+	_force_generators.push_back(f2);
+	f2->_name = "SPRING2";
+	//f2->active = true;
+	_force_reg->addRegistry(f1.get(), p1);
 
-	//_force_generators.push_back(p1);
+	_force_reg->addRegistry(f2.get(), p2);
+
+
 
 	_particles.push_back(p1);
 	_particles.push_back(p2);
 
+
+	Particle* p3 = new Particle(FIREBALL, { -10,20,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 30.0, { 0.5,0.2,0.0,1.0 });
+	_particles.push_back(p3);
+
+	auto f3 = std::shared_ptr<ForceGenerator>(new AnchoredSpringFG(1, 10, { 10.0,20.0,0.0 }));
+	_force_generators.push_back(f3);
+
+	_force_reg->addRegistry(f3.get(), p3);
 }

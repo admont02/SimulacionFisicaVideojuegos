@@ -147,7 +147,7 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	case '-': shootSys->decreaseKSpring();
 		break;
-	case 'S': shootSys->generateSpringDemo();
+	case '7': shootSys->generateSpringDemo();
 		break;
 	default:
 		break;
