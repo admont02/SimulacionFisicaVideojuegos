@@ -200,7 +200,7 @@ public:
 		_volume = V;
 		_liquid_density = d;
 
-		_liquid_particle = new Particle(PLANE, { 0,5,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 30000.0, { 0.5,0.8,.7,1.0 });
+		_liquid_particle = new Particle(PLANE, { 0,45,0 }, { 0,0,0 }, { 0,0,0 }, 2.0, 0.99, 30000.0, { 0.5,0.8,.7,1.0 });
 	}
 
 	virtual void updateForce(Particle* particle, double t) {
