@@ -36,6 +36,7 @@
     <ClInclude Include="UniformParticleGenerator.hpp" />
     <ClInclude Include="ForceGenerator.hpp" />
     <ClInclude Include="ParticleForceRegistry.hpp" />
+    <ClInclude Include="WorldManager.h" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Render">

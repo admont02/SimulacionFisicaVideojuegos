@@ -11,6 +11,7 @@
 #include <iostream>
 #include "particle.hpp"
 #include "particleSystem.hpp"
+#include "WorldManager.h"
 
 
 
@@ -33,6 +34,8 @@ ContactReportCallback gContactReportCallback;
 
 Particle* par = NULL;
 ParticleSystem* shootSys = NULL;
+WorldManager* _world;
+
 
 // Initialize physics engine
 void initPhysics(bool interactive)
@@ -59,6 +62,20 @@ void initPhysics(bool interactive)
 	shootSys = new ParticleSystem();
 	shootSys->generateFireworkSystem();
 	//par = new Particle(ParticleType::FIREBALL);
+	//solidos rigidos
+	PxRigidStatic* suelo = gPhysics->createRigidStatic(PxTransform({ 0,0,0 }));
+	PxShape* shapeSuelo = CreateShape(PxBoxGeometry(100, 0.1, 100));
+	suelo->attachShape(*shapeSuelo);
+	auto item = new RenderItem(shapeSuelo, suelo, { 0,0,0,1 });
+	gScene->addActor(*suelo);
+
+	PxRigidStatic* muro = gPhysics->createRigidStatic(PxTransform({ 10,10,-30 }));
+	//PxRigidDynamic* wall = gPhysics->createRigidDynamic(PxTransform({ 10,30,-30}));
+	PxShape* shapeMuro = CreateShape(PxBoxGeometry(40, 20, 5));
+	muro->attachShape(*shapeMuro);
+	item = new RenderItem(shapeMuro, muro, {0,1,1,1 });
+	gScene->addActor(*muro);
+	_world = new WorldManager(gPhysics, gScene);
 }
 
 
@@ -73,6 +90,7 @@ void stepPhysics(bool interactive, double t)
 	gScene->fetchResults(true);
 	//par->integrate(t);
 	shootSys->update(t);
+	_world->integrate(t);
 }
 
 // Function to clean data
