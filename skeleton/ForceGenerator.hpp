@@ -9,6 +9,8 @@
 class ForceGenerator {
 public:
 	virtual void updateForce(Particle* particle, double duration) = 0;
+	virtual void updateForce(physx::PxRigidBody* solid, double duration){}
+
 	std::string _name;
 	double t = -1e10;//if starting negative --> eternal
 	bool active = false;
@@ -23,6 +25,10 @@ public:
 	virtual void updateForce(Particle* p, double t) {
 		if (fabs(p->getInvMass()) < 1e-10) return;
 		p->addForce(_gravity * p->getMass());
+	}
+	virtual void updateForce(physx::PxRigidBody* solid, double duration) {
+		if (fabs(solid->getInvMass()) < 1e-10) return;
+		solid->addForce(_gravity * solid->getMass());
 	}
 	inline void setGravity(Vector3 g) {
 		_gravity = g;

@@ -15,6 +15,6 @@ void WindForceGenerator::updateForce(Particle* particle, double t)
 	drag_coef = _k1 * drag_coef + _k2 * drag_coef * drag_coef;
 	dragF = -v * drag_coef;
 	//Apply drag force
-	std::cout << dragF.x << "/t" << dragF.y << "/t" << dragF.z << "/t" << std::endl;
+	/*std::cout << dragF.x << "/t" << dragF.y << "/t" << dragF.z << "/t" << std::endl;*/
 	particle->addForce(dragF);
 }

@@ -279,6 +279,7 @@
     <ClInclude Include="RenderUtils.hpp" />
     <ClInclude Include="Render\Camera.h" />
     <ClInclude Include="Render\Render.h" />
+    <ClInclude Include="SolidForceRegistry.h" />
     <ClInclude Include="UniformParticleGenerator.hpp" />
     <ClInclude Include="WorldManager.h" />
   </ItemGroup>
