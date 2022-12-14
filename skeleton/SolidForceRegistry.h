@@ -2,7 +2,7 @@
 #include "ForceGenerator.hpp"
 #include <map>
 
-typedef std::pair<ForceGenerator*, physx::PxRigidDynamic*> FRPair;
+typedef std::pair<ForceGenerator*, physx::PxRigidDynamic*> SRPair;
 
 
 class SolidForceRegistry : public std::multimap<ForceGenerator*, physx::PxRigidDynamic*> {
@@ -12,7 +12,7 @@ public:
 			it->first->updateForce(it->second, duration);
 	}
 	void addRegistry(ForceGenerator* fg, physx::PxRigidDynamic* p) {
-		this->insert(FRPair(fg, p));
+		this->insert(SRPair(fg, p));
 	}
 	void deleteParticleRegistry(physx::PxRigidDynamic* p) {
 		auto it = begin();

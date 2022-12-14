@@ -171,6 +171,10 @@ void keyPress(unsigned char key, const PxTransform& camera)
 		break;
 	case '9': shootSys->generateBuoyancyDemo();
 		break;
+	case 'O': _world->generateSolid();
+		break;
+	case 'P': _world->applyWind();
+		break;
 	default:
 		break;
 	}

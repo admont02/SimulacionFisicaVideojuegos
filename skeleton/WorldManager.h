@@ -3,6 +3,7 @@
 #include <PxPhysics.h>
 #include "RenderUtils.hpp"
 #include <list>
+#include "SolidForceRegistry.h"
 using namespace physx;
 
 class WorldManager
@@ -16,19 +17,31 @@ protected:
 	RenderItem* rI;
 	Vector3 size = { 5, 5, 5 };
 	int maxSolids;
+	SolidForceRegistry* _solid_force_Reg;
+	std::shared_ptr<ForceGenerator>_wind;
+
+
+	std::list<std::shared_ptr<ForceGenerator>> _force_generators;
+
 
 public:
 	WorldManager(PxPhysics* gPhysics, PxScene* gScene) {
 		_physics = gPhysics;
 		_scene = gScene;
 		maxSolids = 200;
+		_solid_force_Reg = new SolidForceRegistry();
+		_wind = std::shared_ptr<ForceGenerator>(new WindForceGenerator(0.6, 0, { -200,-100,0 }));
+		_wind->_name = "WIND";
+		//_wind->active = true;
+		_force_generators.push_back(_wind);
+
 	}
 	~WorldManager();
 
 
 	inline void generateSolid() {
-		PxRigidDynamic* solid= _physics->createRigidDynamic(PxTransform({ 0, 40, 40 }));
-		solid->setLinearVelocity({0,10,10});
+		PxRigidDynamic* solid = _physics->createRigidDynamic(PxTransform({ 0, 0, 0 }));
+		solid->setLinearVelocity({ 0,0,100 });
 		solid->setAngularVelocity({ 0, 0, 0 });
 
 		PxShape* shape = CreateShape(PxBoxGeometry(size));
@@ -39,16 +52,25 @@ public:
 		_scene->addActor(*solid);
 
 		_solids.push_back(solid);
+
+
+		if (_wind->active)
+			_solid_force_Reg->addRegistry(getForceGenerator("WIND"), solid);
 	}
-	//void addStaticObject();
+	
 	inline void integrate(double t) {
-		if (_solids.size() >= maxSolids) return; 
-		generateSolid();
+		_solid_force_Reg->updateForce(t);
 	}
-	//void addForce();
 
-
-
+	ForceGenerator* getForceGenerator(std::string name) {
+		for (auto f : _force_generators)
+			if (f->_name == name)
+				return f.get();
+		return nullptr;
+	}
+	inline void applyWind() {
+		_wind->active = !_wind->active;
+	}
 
 
 };

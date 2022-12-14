@@ -78,7 +78,7 @@ public:
 	WindForceGenerator();
 	WindForceGenerator(const float k1, const float k2, Vector3 _vel);
 	void updateForce(Particle* particle, double t) override;
-
+	virtual void updateForce(physx::PxRigidBody* solid, double duration);
 
 };
 class WhirlwindForceGenerator : public WindForceGenerator {
