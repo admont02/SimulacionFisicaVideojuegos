@@ -1,12 +1,11 @@
-#ifndef __PARTICLE_H__
-#define __PARTICLE_H__
+#pragma once
 
 #include "core.hpp"
 #include <PxPhysicsAPI.h>
 #include "RenderUtils.hpp"
 
 enum ParticleType {
-	FIREBALL, FIREWORK,BOX,PLANE
+	FIREBALL, FIREWORK, BOX, PLANE
 };
 
 class Particle {
@@ -50,6 +49,7 @@ public:
 	virtual Particle* clone() const;
 	inline void setLifeTime(double time) { _remaining_time = time; }
 	inline void setColor(Vector4 c) { color = c; }
+	inline void setColor2(Vector4 c) { renderItem->color = c; }
 	void redimension(physx::PxTransform* newPos, double newMas, Vector4 newCol);
 
 	//fuerzas 
@@ -62,6 +62,6 @@ public:
 	inline void addForce(const Vector3& f) { force += f; }
 	inline float getMass() { return mass; }
 	inline float getInvMass() { return inverse_mass; }
+	bool isOnWind = false;
 
 };
-#endif

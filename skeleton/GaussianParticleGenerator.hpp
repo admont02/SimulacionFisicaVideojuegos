@@ -1,4 +1,4 @@
-#include "particle.hpp"
+#include "Particle.h"
 #include "particleGenerator.hpp"
 #ifndef __GAUSSIAN_PARTICLE_GENERATOR_H__
 #define __GAUSSIAN_PARTICLE_GENERATOR_H__

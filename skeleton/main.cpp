@@ -1,6 +1,8 @@
 #include <ctype.h>
 
 #include <PxPhysicsAPI.h>
+#include "PxRigidDynamic.h"
+#include "PxRigidActor.h"
 
 #include <vector>
 
@@ -9,12 +11,11 @@
 #include "callbacks.hpp"
 
 #include <iostream>
-#include "particle.hpp"
-#include "particleSystem.hpp"
-#include "WorldManager.h"
+#include "Player.h"
+#include "ParticleSystem.h"
 
-
-
+std::string display_text;
+int puntos = 0;
 using namespace physx;
 
 PxDefaultAllocator		gAllocator;
@@ -23,24 +24,70 @@ PxDefaultErrorCallback	gErrorCallback;
 PxFoundation* gFoundation = NULL;
 PxPhysics* gPhysics = NULL;
 
-
+bool canJump = false;
 PxMaterial* gMaterial = NULL;
 
 PxPvd* gPvd = NULL;
-
+RenderItem* rIBullets = NULL;
 PxDefaultCpuDispatcher* gDispatcher = NULL;
 PxScene* gScene = NULL;
 ContactReportCallback gContactReportCallback;
+AuxiliarPlayer* aux = NULL;
+PxRigidDynamic* realPlayer;
+ParticleSystem* particleSys = NULL;
+void createPlayer() {
 
-Particle* par = NULL;
-ParticleSystem* shootSys = NULL;
-WorldManager* _world;
+	realPlayer = gPhysics->createRigidDynamic(PxTransform({ 0,0,0 }));
+	realPlayer->setLinearVelocity({ 0,0,0 });
+	realPlayer->setAngularVelocity({ 0,0,0 });
+	realPlayer->setName("MyPlayer");
+
+	auto shape = CreateShape(PxSphereGeometry(1.0)); realPlayer->attachShape(*shape);
+	PxRigidBodyExt::setMassAndUpdateInertia(*realPlayer, 1.0);
+
+	rIBullets = new RenderItem(shape, realPlayer, { 0.5, 0.8, 0.7, 1.0 });
+	gScene->addActor(*realPlayer);
+
+	realPlayer->setLinearDamping(0.99);
+	realPlayer->setAngularDamping(0.);
+
+}
+void texto() {
+	display_text = "Puntos:  " + std::to_string(puntos);
+	drawText(display_text, 400, 400);
+}
+void shoot() {
+	/*renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(bullet_radius)), &pose, bullet_color);
+
+	newPos = GetCamera()->getEye();
+	setPosition(newPos);
+
+	newVel = GetCamera()->getDir() * bullet_velMagnitude;
+	setVel(newVel);
 
 
+	setAcc(bullet_acceleration);
+	setDamping(bullet_damping);*/
+
+	auto b = gPhysics->createRigidDynamic(PxTransform({ aux->getPosition() }));
+	b->setLinearVelocity({ GetCamera()->getDir() * 200 });
+	b->setAngularVelocity({ 0,0,0 });
+	b->setName("Bullet");
+
+	auto shape = CreateShape(PxSphereGeometry(1.0)); b->attachShape(*shape);
+	PxRigidBodyExt::setMassAndUpdateInertia(*b, .5);
+
+	auto x = new RenderItem(shape, b, { 0.5, 0.8, 0.7, 1.0 });
+	gScene->addActor(*b);
+
+	b->setLinearDamping(0.99);
+	b->setAngularDamping(0.5);
+}
 // Initialize physics engine
 void initPhysics(bool interactive)
 {
 	PX_UNUSED(interactive);
+
 	gFoundation = PxCreateFoundation(PX_FOUNDATION_VERSION, gAllocator, gErrorCallback);
 
 	gPvd = PxCreatePvd(*gFoundation);
@@ -59,38 +106,36 @@ void initPhysics(bool interactive)
 	sceneDesc.filterShader = contactReportFilterShader;
 	sceneDesc.simulationEventCallback = &gContactReportCallback;
 	gScene = gPhysics->createScene(sceneDesc);
-	shootSys = new ParticleSystem();
-	shootSys->generateFireworkSystem();
-	//par = new Particle(ParticleType::FIREBALL);
-	//solidos rigidos
-	PxRigidStatic* suelo = gPhysics->createRigidStatic(PxTransform({ 0,0,0 }));
-	PxShape* shapeSuelo = CreateShape(PxBoxGeometry(100, 0.1, 100));
-	suelo->attachShape(*shapeSuelo);
-	auto item = new RenderItem(shapeSuelo, suelo, { 0,0,0,1 });
-	gScene->addActor(*suelo);
 
-	PxRigidStatic* muro = gPhysics->createRigidStatic(PxTransform({ 10,10,-30 }));
-	//PxRigidDynamic* wall = gPhysics->createRigidDynamic(PxTransform({ 10,30,-30}));
-	PxShape* shapeMuro = CreateShape(PxBoxGeometry(40, 20, 5));
-	muro->attachShape(*shapeMuro);
-	item = new RenderItem(shapeMuro, muro, {0,1,1,1 });
-	gScene->addActor(*muro);
-	_world = new WorldManager(gPhysics, gScene);
+
+	aux = new AuxiliarPlayer();
+	createPlayer();
+	particleSys = new ParticleSystem(realPlayer, aux, gScene, gPhysics);
+
+
+	
+
+	particleSys->createSalas();
+	particleSys->generateSlinky();
+	particleSys->createEnemies({ 300,0,0 });
 }
 
 
 // Function to configure what happens in each step of physics
 // interactive: true if the game is rendering, false if it offline
 // t: time passed since last call in milliseconds
+
 void stepPhysics(bool interactive, double t)
 {
 	PX_UNUSED(interactive);
 
 	gScene->simulate(t);
 	gScene->fetchResults(true);
-	//par->integrate(t);
-	shootSys->update(t);
-	_world->integrate(t);
+	particleSys->update(t);
+	particleSys->moveGameCamera();
+	aux->update(t);
+	texto();
+	//GetCamera()
 }
 
 // Function to clean data
@@ -109,9 +154,6 @@ void cleanupPhysics(bool interactive)
 	transport->release();
 
 	gFoundation->release();
-
-	delete par;
-	par = nullptr;
 }
 
 // Function called when a key is pressed
@@ -123,67 +165,46 @@ void keyPress(unsigned char key, const PxTransform& camera)
 	{
 		//case 'B': break;
 		//case ' ':	break;
-	case 'X': shootSys->shootParticle(FIREBALL);
-		break;
-	case 'G':
+	case ' ':
 	{
-		shootSys->activeParticleGenerator(UNIFORM);
-		//shootSys->addGenerator(GAUSSIAN);
 		break;
 	}
+	case 'W':
+		particleSys->movePlayer();
+		break;
 	case 'C':
-	{
-		shootSys->activeParticleGenerator(GAUSSIAN);
-		//shootSys->addGenerator(GAUSSIAN);
-		break;
-	}
+		particleSys->activeParticleGenerator(GAUSSIAN);
 
-	case 'F':
-	{
-		shootSys->shootFirework(0);
 		break;
-	}
-	case '1': {
-		shootSys->setGravityEffect();
+
+	case 'S':particleSys->playerJoinsSlinky(aux, realPlayer);
 		break;
-	}
-	case '2': {
-		shootSys->turnOnForce("WIND");
+	
+	case 'X': //shoot();
+		particleSys->shootBullet({ particleSys->getPlayerPos() + Vector3(0,4,0)});
 		break;
-	}
-	case '3': {
-		shootSys->turnOnForce("WHIRLWIND");
-		break;
-	}
-	case '4': {
-		shootSys->explosion();
-		break;
-	}
-	case '5': shootSys->turnOffAllForces();
-		break;
-	case '+': shootSys->increaseKSpring();
-		break;
-	case '-': shootSys->decreaseKSpring();
-		break;
-	case '7': shootSys->generateSpringDemo();
-		break;
-	case '8': shootSys->generateSlinkyDemo();
-		break;
-	case '9': shootSys->generateBuoyancyDemo();
-		break;
-	case 'O': _world->generateSolid();
-		break;
-	case 'P': _world->applyWind();
+	
+	case 'J': 
+		particleSys->jumpPlayer();
 		break;
 	default:
 		break;
 	}
 }
 
+
 void onCollision(physx::PxActor* actor1, physx::PxActor* actor2)
 {
-	PX_UNUSED(actor1);
-	PX_UNUSED(actor2);
+	if (actor1->getName() == "Bullet" && actor2->getName() == "Canasta") {
+		particleSys->shootFirework(0);
+		puntos += 1;
+	}
+	if (actor1->getName() == "Bullet" && actor2->getName() == "Enemy") {
+		puntos += 1;
+	}
+	if (actor1->getName() == "BulletEnemy" && actor2->getName() == "MyPlayer") {
+		puntos -= 1;
+	}
 }
 
 
@@ -202,3 +223,32 @@ int main(int, const char* const*)
 
 	return 0;
 }
+AuxiliarPlayer* getPlayer() {
+	return aux;
+}
+/*
+void WorldManager::eliminarCuerpo(RigidSolid* cuerpo){
+	//DeregisterRenderItem(cuerpo->item);
+	rfr->deleteRigidRegistry(static_cast<PxRigidDynamic*>(cuerpo->solidType));
+	cuerpo->solidType->release();
+	DeregisterRenderItem(cuerpo->item);
+	delete cuerpo;
+	currentNum--;
+}
+
+
+struct RigidSolid {
+	PxRigidActor* solidType;
+	RenderItem* item;
+	vector<string> forcesNames;
+	double maxTimeAlive;
+	double timeAlive=-1.0;
+};
+
+
+list<RigidSolid*> list_static;
+
+
+if (PxGeometryQuery::overlap(pelota->item->shape->getGeometry().sphere(), pelota->rigid->getGlobalPose(), porteriaRoja->rI->shape->getGeometry().box(), *porteriaRoja->p))
+
+*/

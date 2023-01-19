@@ -57,7 +57,7 @@ void keyboardCallback(unsigned char key, int x, int y)
 	if(key==27)
 		exit(0);
 
-	if(!sCamera->handleKey(key, x, y))
+	/*if(!sCamera->handleKey(key, x, y))*/
 		keyPress(key, sCamera->getTransform());
 }
 
@@ -137,9 +137,9 @@ void exitCallback(void)
 void renderLoop()
 {
 	StartCounter();
-	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(-0.6f,-0.2f,-0.7f));
+	sCamera = new Camera(PxVec3(50.0f, 50.0f, 50.0f), PxVec3(0,-50,-50));
 
-	setupDefaultWindow("Practica 2-Adrian Montero Castrillo");
+	setupDefaultWindow("Simulacion Fisica Videojuegos");
 	setupDefaultRenderState();
 
 	glutIdleFunc(idleCallback);

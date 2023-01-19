@@ -1,5 +1,6 @@
+#include "Particle.h"
 
-#include "particle.hpp"
+
 
 
 Particle::Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, float d)
@@ -32,11 +33,11 @@ Particle::Particle(ParticleType Pt, Vector3 p, Vector3 v, Vector3 acc, float m, 
 	color = col;
 	_alive = true;
 	if (_type == BOX)
-		renderItem = new RenderItem(CreateShape(physx::PxBoxGeometry(1.0f,1.0f,1.0f)), &pose, color);
-	else if(_type==PLANE)
+		renderItem = new RenderItem(CreateShape(physx::PxBoxGeometry(1.0f, 1.0f, 1.0f)), &pose, color);
+	else if (_type == PLANE)
 		renderItem = new RenderItem(CreateShape(physx::PxBoxGeometry(50.0f, .5f, 50.0f)), &pose, color);
 	else
-		renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(2.0)), &pose, color);
+		renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(1.0)), &pose, color);
 	//RegisterRenderItem(renderItem);
 	clearForce();
 }
@@ -97,3 +98,4 @@ void Particle::redimension(physx::PxTransform* newPos, double newMass, Vector4 n
 	DeregisterRenderItem(renderItem);
 	renderItem = new RenderItem(CreateShape(physx::PxSphereGeometry(newMass)), newPos, newCol);
 }
+

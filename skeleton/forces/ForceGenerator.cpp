@@ -28,7 +28,6 @@ void WindForceGenerator::updateForce(physx::PxRigidBody* solid, double duration)
 	Vector3 dragF;
 	drag_coef = _k1 * drag_coef + _k2 * drag_coef * drag_coef;
 	dragF = -v * drag_coef;
-	//Apply drag force
-	/*std::cout << dragF.x << "/t" << dragF.y << "/t" << dragF.z << "/t" << std::endl;*/
+	
 	solid->addForce(dragF);
 }

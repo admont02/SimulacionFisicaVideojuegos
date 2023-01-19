@@ -39,6 +39,10 @@ std::list<Particle*> GaussianParticleGenerator::generateParticles()
 			auto* p = _model->clone();
 			p->setPosition(_model->getPosition()+ Vector3((float)_x_pos_Distr(gen), (float)_y_pos_Distr(gen), (float)_z_pos_Distr(gen)));
 			p->setNewVelocity(_model->getVelocity() + Vector3((float)_x_vel_Distr(gen),(float)_y_vel_Distr(gen),(float)_z_vel_Distr(gen)));
+			auto r = rand() % 255 + 0;
+			auto g = rand() % 255 + 0;
+			auto b = rand() % 255 + 0;
+			p->setColor2(Vector4(r / 255.0, g / 255.0, b / 255.0, 1.0));
 			p->setLifeTime(_time_Distr(gen));
 			l.push_back(p);
 		}
